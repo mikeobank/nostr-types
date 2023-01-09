@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Nostr</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      fieldset {
+        margin-bottom: 24px;
+      }
+      label {
+        display: block;
+      }
+      input {
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Nostr</h1>
+    <dd><dt>public key:</dt><dl id="public-key"></dl></dd>
+    <dd><dt>private key:</dt><dl id="private-key"></dl></dd>
+    <form id="connect">
+      <fieldset>
+        <legend>Relay</legend>
+        <label>Websocket URL</label>
+        <input name="url" />
+      </fieldset>
+      <fieldset>
+        <legend>Filters</legend>
+        <label>Ids (comma separated)</label>
+        <input name="filters.ids" />
+        <label>Authors (comma separated)</label>
+        <input name="filters.authors" />
+        <label>#e (comma separated)</label>
+        <input name="filters.#e" />
+        <label>#p (comma separated)</label>
+        <input name="filters.#p" />
+        <label>since</label>
+        <input name="filters.since" type="date" />
+        <label>until</label>
+        <input name="filters.until" type="date" />
+        <label>limit</label>
+        <input name="filters.limit" type="number" min="1" />
+      </fieldset>
+      <input type="submit" />
+    </form>
+
+    <ul id="relay-wrapper"></ul>
+    <button type="button" id="close">close all</button>
+
+    <form id="send">
+      <fieldset>
+        <legend>Send message</legend>
+        <input name="send.content" />
+      </fieldset>
+      <input type="submit" value="Send" />
+    </form>
+
+    <script type="module" src="js/script.ts"></script>
+  </body>
+</html>
