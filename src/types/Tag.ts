@@ -9,7 +9,7 @@ import { isEmpty } from "../lib/utils/isEmpty"
 import { isArrayOfSize } from "../lib/utils/isSize"
 
 type TagName = "e" | "p" | string
-export type Tag = [TagName, PublicKeyHex | Id, RelayURL]
+export type Tag = [TagName, PublicKeyHex | Id, RelayURL | ""]
 export type Tags = Tag[]
 
 export const isTag = (tag: unknown) : tag is Tag => {
