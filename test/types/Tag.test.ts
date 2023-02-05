@@ -7,6 +7,7 @@ test("isTag", () => {
   expect(isTag(["e", hex32, ""])).toBeTruthy()
   expect(isTag(["e", "0a", ""])).toBeFalsy()
   expect(isTag(["custom", hex32, "ws://example.com"])).toBeTruthy()
+  expect(isTag(["p", hex32, "ws://example.com", "pet name"])).toBeTruthy()
 })
 
 test("areTags", () => {
