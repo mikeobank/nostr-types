@@ -162,7 +162,7 @@ export const isEvent = async (event: unknown) : Promise<boolean> => {
   return await tryParseEvent(event, false) !== undefined
 }
 
-export const isEventSync = (event: unknown) : boolean => {
+export const isEventSync = (event: unknown) : event is NostrEvent => {
   return tryParseEventSync(event, false) !== undefined
 }
 
