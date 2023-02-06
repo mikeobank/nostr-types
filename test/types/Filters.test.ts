@@ -5,6 +5,7 @@ test("isFilters", () => {
   expect(isFilters([])).toBeFalsy()
   expect(isFilters({})).toBeTruthy()
   expect(isFilters({ ids: ["a", "1"] })).toBeTruthy()
+  expect(isFilters({ additional: "String" })).toBeTruthy()
 })
 
 test("parseFilters", () => {
