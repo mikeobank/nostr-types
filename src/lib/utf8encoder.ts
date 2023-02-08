@@ -1,5 +1,5 @@
 const textEncoder = new TextEncoder()
-export const encode = (s: string) => textEncoder.encode(s)
+export const encode = (str: string) : Uint8Array => textEncoder.encode(str)
 
 const textDecoder = new TextDecoder()
-export const decode = (a: Uint8Array) => textDecoder.decode(a)
+export const decode = (arr: Uint8Array) : string => textDecoder.decode(arr)
