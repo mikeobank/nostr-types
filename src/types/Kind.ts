@@ -5,7 +5,8 @@ export const kinds = {
   0: "set_metadata",
   1: "text_note",
   2: "recommend_server",
-  3: "contact_list"
+  3: "contact_list",
+  4: "encrypted_dm"
 }
 
 export type Kind = keyof typeof kinds

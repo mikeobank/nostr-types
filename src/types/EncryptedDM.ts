@@ -12,7 +12,8 @@ import subtleCrypto from "../lib/subtleCrypto"
 type EncryptedText = Base64
 type IV = Base64
 type EncryptedContent = `${ EncryptedText }?iv=${ IV }`
-type EncryptedDM = Omit<NostrEvent, "content"> & {
+type EncryptedDM = Omit<NostrEvent, "kind" | "content"> & {
+  kind: 4,
   content: EncryptedContent
 }
 
@@ -79,7 +80,7 @@ export const decrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, 
 export const encryptEvent = (privateKey: PrivateKey) => async (publicKey: PublicKey, event: NostrEvent) : Promise<EncryptedDM> => {
   const encryptedContent = await encrypt(privateKey)(publicKey, event.content)
   const tags = appendTag(event.tags, ["p", createHexFromUint8Array(publicKey)])
-  return await createEvent(privateKey)(event.kind, tags, encryptedContent, event.created_at) as EncryptedDM
+  return await createEvent(privateKey)(4, tags, encryptedContent, event.created_at) as EncryptedDM
 }
 
 export const decryptEvent = (privateKey: PrivateKey) => async (encryptedDM: EncryptedDM) : Promise<NostrEvent> => {
@@ -97,7 +98,7 @@ export const decryptEvent = (privateKey: PrivateKey) => async (encryptedDM: Encr
 }
 
 export const isEncryptedDM = async (encryptedDM: unknown) : Promise<boolean> => {
-  if (await isEvent(encryptedDM)) {
+  if (await isEvent(encryptedDM) && (encryptedDM as NostrEvent).kind === 4) {
     try {
       parseEncryptedContent((encryptedDM as NostrEvent).content)
       return true
@@ -109,7 +110,7 @@ export const isEncryptedDM = async (encryptedDM: unknown) : Promise<boolean> => 
 }
 
 export const isEncryptedDMSync = (encryptedDM: unknown) : encryptedDM is EncryptedDM => {
-  if (isEventSync(encryptedDM)) {
+  if (isEventSync(encryptedDM) && encryptedDM.kind === 4) {
     try {
       parseEncryptedContent((encryptedDM as NostrEvent).content)
       return true

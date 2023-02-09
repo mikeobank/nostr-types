@@ -19,6 +19,7 @@ test("encryptEvent, decryptEvent", async () => {
   const keyPairTo = generateKeyPair()
   const event = await createEvent(privateKey)(1, [], "hello")
   const encryptedDM = await encryptEvent(privateKey)(keyPairTo.publicKey, event)
+  expect(encryptedDM.kind).toBe(4)
   expect(encryptedDM.content).not.toBe(event.content)
   expect(encryptedDM.id).not.toBe(event.id)
   expect(encryptedDM.tags[0]).toEqual(["p", createHexFromUint8Array(keyPairTo.publicKey)])
