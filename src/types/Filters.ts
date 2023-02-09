@@ -8,19 +8,27 @@ import isArray from "../lib/utils/isArray"
 import { is } from "../lib/utils/is"
 import { isUInt } from "../lib/utils/isInt"
 import isObject from "../lib/utils/isObject"
+import { isNotEmpty } from "../lib/utils/isEmpty"
+import isString from "../lib/utils/isString"
 
 type Limit = number // Unsigned Int
 const isLimit = (limit: unknown) : limit is Limit => isUInt(limit)
 
+type GenericTag = `#${ string }`
 export type Filters = {
   ids?: IdPrefix[]
   authors?: PublicKeyHexPrefix[]
   kinds?: Kind[]
-  "#e"?: Id[]
-  "#p"?: PublicKeyHex[]
   since?: UnixTimestamp
   until?: UnixTimestamp
   limit?: Limit
+  [genericTag: GenericTag]: string[]
+}
+
+const genericTags = (filters: Record<string, unknown>) : GenericTag[] => {
+  const isGenericTag = (key: string) : key is GenericTag => /^#[a-z]$/.test(key)
+  const keys = Object.keys(filters)
+  return keys.filter(isGenericTag).filter(key => ["#e", "#p"].includes(key) === false)
 }
 
 export const hashFilters = (filters: Filters) : Hex => {
@@ -105,6 +113,17 @@ export const parseFilters = (value: unknown) : Filters => {
       } else {
         throw new Error(`${ value.limit } is not a valid number`)
       }
+    }
+    const tags = genericTags(value)
+    if (isNotEmpty(tags)) {
+      tags.forEach(tag => {
+        const tagValues = value[tag]
+        if (isArray(tagValues) && tagValues.every(isString)) {
+          filters[tag] = tagValues
+        } else {
+          throw new Error(`${ tagValues } contains a non string value`)
+        }
+      })
     }
   } else {
     throw new Error(`${ value } is not an object`)

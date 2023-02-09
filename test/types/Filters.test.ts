@@ -33,4 +33,11 @@ test("parseFilters", () => {
   expect(() => parseFilters({ limit: -1 })).toThrow()
   expect(() => parseFilters({ limit: 128 })).not.toThrow()
   expect(() => parseFilters({ limit: 0 })).not.toThrow()
+  expect(() => parseFilters({ "#g": [1] })).toThrow()
+  expect(() => parseFilters({ "#g": ["57.64911,10.40744"] })).not.toThrow()
+  expect(() => parseFilters({ "#r": ["example.com"] })).not.toThrow()
+  expect(() => parseFilters({ "#t": ["#hashtag"] })).not.toThrow()
+
+  const filters = { authors: [hex32], "#r": ["example.com"] }
+  expect(parseFilters(filters)).toEqual(filters)
 })
