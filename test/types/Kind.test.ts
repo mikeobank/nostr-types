@@ -1,12 +1,12 @@
 import { isKind, areKinds, kindByName, getKind } from "../../src/types/Kind"
 
 test("isKind", () => {
-  expect(isKind(5)).toBeFalsy()
+  expect(isKind(-1)).toBeFalsy()
   expect(isKind(0)).toBeTruthy()
 })
 
 test("areKinds", () => {
-  expect(areKinds([0, 5])).toBeFalsy()
+  expect(areKinds([0, -1])).toBeFalsy()
   expect(areKinds([0, 1])).toBeTruthy()
 })
 
@@ -19,6 +19,7 @@ test("kindByName", () => {
   expect(kindByName("RECOMMEND_SERVER")).toBe(2)
   expect(kindByName("contact list")).toBe(3)
   expect(kindByName("encrypted dm")).toBe(4)
+  expect(kindByName("deletion")).toBe(5)
 })
 
 test("getKind", () => {
