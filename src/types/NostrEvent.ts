@@ -18,7 +18,7 @@ export type NostrEvent = {
   content: Content
   sig: SignatureHex
 }
-type UnsignedNostrEvent = Omit<NostrEvent, "sig">
+export type UnsignedNostrEvent = Omit<NostrEvent, "sig">
 
 const createUnsignedEvent = (kindOrName: KindOrName, tags: Tags, content: Content, created_at: UnixTimestamp, publicKey: PublicKey) : UnsignedNostrEvent => {
   const kind = getKind(kindOrName)
