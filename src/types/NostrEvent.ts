@@ -8,7 +8,6 @@ import { PublicKey, PrivateKey, createKeyPair } from "./KeyPair"
 import { Content, isContent } from "./Content"
 import toArray from "../lib/utils/toArray"
 import isObject from "../lib/utils/isObject"
-import { isNot } from "../lib/utils/is"
 
 export type NostrEvent = {
   id: Id
@@ -19,7 +18,7 @@ export type NostrEvent = {
   content: Content
   sig: SignatureHex
 }
-type UnsignedNostrEvent = Omit<NostrEvent, "sig">
+export type UnsignedNostrEvent = Omit<NostrEvent, "sig">
 
 const createUnsignedEvent = (kindOrName: KindOrName, tags: Tags, content: Content, created_at: UnixTimestamp, publicKey: PublicKey) : UnsignedNostrEvent => {
   const kind = getKind(kindOrName)
