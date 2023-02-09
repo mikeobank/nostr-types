@@ -1,4 +1,4 @@
-import { createRelayEventMessage, createRelayNoticeMessage, isRelayEventMessage, isRelayNoticeMessage } from "../../src/types/RelayMessage"
+import { createRelayEventMessage, createRelayNoticeMessage, createRelayEOSEMessage, isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage } from "../../src/types/RelayMessage"
 import { createEvent } from "../../src/types/NostrEvent"
 import privateKey from "../privateKey"
 
@@ -18,6 +18,13 @@ test("createRelayNoticeMessage", async () => {
   expect(message[1]).toBe("message")
 })
 
+test("createRelayEventMessage", async () => {
+  const message = createRelayEOSEMessage("subscriptionId")
+  expect(message.length).toBe(2)
+  expect(message[0]).toBe("EOSE")
+  expect(message[1]).toBe("subscriptionId")
+})
+
 test("isRelayEventMessage", async () => {
   const event = await createEvent(privateKey)(1, [], "a")
   const message = createRelayEventMessage("subscriptionId", event)
@@ -29,4 +36,9 @@ test("isRelayEventMessage", async () => {
 test("isRelayNoticeMessage", () => {
   const message = createRelayNoticeMessage("message")
   expect(isRelayNoticeMessage(message)).toBeTruthy()
+})
+
+test("isRelayEOSEMessage", () => {
+  const message = createRelayEOSEMessage("subscriptionId")
+  expect(isRelayEOSEMessage(message)).toBeTruthy()
 })

@@ -5,7 +5,7 @@ import { NostrEvent, parseEvent } from "./NostrEvent"
 import { ClientMessage, createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "./ClientMessage"
 import { SubscriptionId } from "./SubscriptionId"
 import { hashFilters } from "./Filters"
-import { isRelayEventMessage, isRelayNoticeMessage } from "./RelayMessage"
+import { isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage } from "./RelayMessage"
 import { isNotEmpty } from "../lib/utils/isEmpty"
 import WebSocket from "../lib/websocket"
 
@@ -41,6 +41,8 @@ const onMessage = async (event: MessageEvent) => {
     }
   } else if (isRelayNoticeMessage(data)) {
     console.log("NOTICE: ", data[1])
+  } else if (isRelayEOSEMessage(data)) {
+    console.log("EOSE: ", data[1])
   } else {
     console.log("NON NOSTR EVENT: ", event)
   }
