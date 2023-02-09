@@ -1,4 +1,4 @@
-import { isKind, areKinds, kindByName, getKind } from "../../src/types/Kind"
+import { isKind, areKinds, kindByName, getKind, isReplaceableKind, isEphemeralKind } from "../../src/types/Kind"
 
 test("isKind", () => {
   expect(isKind(-1)).toBeFalsy()
@@ -25,4 +25,16 @@ test("kindByName", () => {
 test("getKind", () => {
   expect(getKind("text_note")).toBe(1)
   expect(() => getKind("NON_EXISTING")).toThrow()
+})
+
+test("isReplaceableKind", () => {
+  expect(isReplaceableKind(9999)).toBeFalsy()
+  expect(isReplaceableKind(20000)).toBeFalsy()
+  expect(isReplaceableKind(10000)).toBeTruthy()
+})
+
+test("isEphemeralKind", () => {
+  expect(isEphemeralKind(19999)).toBeFalsy()
+  expect(isEphemeralKind(31000)).toBeFalsy()
+  expect(isEphemeralKind(20000)).toBeTruthy()
 })

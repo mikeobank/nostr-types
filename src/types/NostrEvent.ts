@@ -1,4 +1,4 @@
-import { Kind, KindOrName, isKind, getKind } from "./Kind"
+import { Kind, KindOrName, isKind, getKind, isReplaceableKind, isEphemeralKind } from "./Kind"
 import { Tags, areTags } from "./Tag"
 import { Id, isId, createId } from "./Id"
 import { PublicKeyHex, isPublicKeyHex, createPublicKeyHex } from "./PublicKey"
@@ -163,5 +163,13 @@ export const isEvent = async (event: unknown) : Promise<boolean> => {
 
 export const isEventSync = (event: unknown) : event is NostrEvent => {
   return tryParseEventSync(event, false) !== undefined
+}
+
+export const isReplaceableEvent = (event: NostrEvent) : boolean => {
+  return isReplaceableKind(event.kind)
+}
+
+export const isEphemeralEvent = (event: NostrEvent) : boolean => {
+  return isEphemeralKind(event.kind)
 }
 

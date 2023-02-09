@@ -1,4 +1,4 @@
-import isNumber from "../lib/utils/isNumber"
+import { UInt, isUInt } from "../lib/utils/isInt"
 import { isNot } from "../lib/utils/is"
 
 export const kinds = {
@@ -10,12 +10,12 @@ export const kinds = {
   5: "deletion"
 }
 
-export type Kind = keyof typeof kinds
+export type Kind = UInt
 export type KindName = string
 export type KindOrName = Kind | KindName
 
 export const isKind = (kind: unknown) : kind is Kind => {
-  return isNumber(kind) && Object.prototype.hasOwnProperty.call(kinds, kind)
+  return isUInt(kind)
 }
 
 export const areKinds = (kinds: unknown[]) : kinds is Kind[] => {
@@ -35,4 +35,12 @@ export const getKind = (kindOrName: KindOrName) => {
   const kind = isKind(kindOrName) ? kindOrName : kindByName(kindOrName)
   if (isNot(kind)) throw new Error(`${ kindOrName } does not correspond to an existing Kind`)
   return kind
+}
+
+export const isReplaceableKind = (kind: Kind) => {
+  return kind >= 10000 && kind < 20000
+}
+
+export const isEphemeralKind = (kind: Kind) => {
+  return kind >= 20000 && kind < 30000
 }
