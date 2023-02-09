@@ -25,6 +25,8 @@
   "dependencies": {
     "@noble/hashes": "^1.1.5",
     "@noble/secp256k1": "^1.7.0",
+    "@scure/bip32": "^1.1.5",
+    "@scure/bip39": "^1.1.1",
     "websocket": "^1.0.34"
   }
 }
