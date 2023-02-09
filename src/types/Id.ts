@@ -39,3 +39,12 @@ export const isIdPrefix = (idPrefix: unknown) : idPrefix is IdPrefix => {
 export const areIdPrefixes = (idPrefixes: unknown[]) : idPrefixes is IdPrefix[] => {
   return idPrefixes.every(isIdPrefix)
 }
+
+export const calculateDifficulty = (id: Id | IdPrefix) : number => {
+  const numLeadingZeros = id.length - id.replace(/^0+/, "").length
+  return numLeadingZeros * 4
+}
+
+export const hasDifficulty = (id: Id | IdPrefix) : boolean => {
+  return calculateDifficulty(id) > 0
+}
