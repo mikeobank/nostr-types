@@ -8,7 +8,6 @@ import { PublicKey, PrivateKey, createKeyPair } from "./KeyPair"
 import { Content, isContent } from "./Content"
 import toArray from "../lib/utils/toArray"
 import isObject from "../lib/utils/isObject"
-import { isNot } from "../lib/utils/is"
 
 export type NostrEvent = {
   id: Id

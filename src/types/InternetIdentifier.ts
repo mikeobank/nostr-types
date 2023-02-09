@@ -10,7 +10,7 @@ export const isDomain = (domain: unknown) : domain is Domain => {
 }
 
 export const isLocalPart = (localPart: unknown) : localPart is LocalPart => {
-  const localPartRegex = /^[a-z0-9\-_\.]+$/i
+  const localPartRegex = /^[a-z0-9-_.]+$/i
   return isString(localPart) && localPartRegex.test(localPart)
 }
 

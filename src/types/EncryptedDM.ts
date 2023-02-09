@@ -101,7 +101,9 @@ export const isEncryptedDM = async (encryptedDM: unknown) : Promise<boolean> => 
     try {
       parseEncryptedContent((encryptedDM as NostrEvent).content)
       return true
-    } catch (err) {}
+    } catch (err) {
+      return false
+    }
   }
   return false
 }
@@ -111,7 +113,9 @@ export const isEncryptedDMSync = (encryptedDM: unknown) : encryptedDM is Encrypt
     try {
       parseEncryptedContent((encryptedDM as NostrEvent).content)
       return true
-    } catch (err) {}
+    } catch (err) {
+      return false
+    }
   }
   return false
 }
