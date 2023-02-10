@@ -1,4 +1,4 @@
-import { createEvent, verifyEvent, verifyEventSync, parseEvent, parseEventSync, parseEvents, parseEventsSync, isReplaceableEvent, isEphemeralEvent } from "../../src/types/NostrEvent"
+import { createEvent, verifyEvent, verifyEventSync, parseEvent, parseEventSync, parseEvents, parseEventsSync, isReplaceableEvent, isEphemeralEvent, isParameterizedReplaceableEvent } from "../../src/types/NostrEvent"
 import privateKey from "../privateKey"
 
 test("createEvent", async () => {
@@ -51,6 +51,11 @@ test("parseEvents", async () => {
 test("isReplaceableEvent", async () => {
   const event = await createEvent(privateKey)(10000)
   expect(isReplaceableEvent(event)).toBeTruthy()
+})
+
+test("isParameterizedReplaceableEvent", async () => {
+  const event = await createEvent(privateKey)(30000)
+  expect(isParameterizedReplaceableEvent(event)).toBeTruthy()
 })
 
 test("isEphemeralEvent", async () => {

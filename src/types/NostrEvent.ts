@@ -1,4 +1,4 @@
-import { Kind, KindOrName, isKind, getKind, isReplaceableKind, isEphemeralKind } from "./Kind"
+import { Kind, KindOrName, isKind, getKind, isReplaceableKind, isEphemeralKind, isParameterizedReplaceableKind } from "./Kind"
 import { Tags, areTags } from "./Tag"
 import { Id, isId, createId } from "./Id"
 import { PublicKeyHex, isPublicKeyHex, createPublicKeyHex } from "./PublicKey"
@@ -169,7 +169,10 @@ export const isReplaceableEvent = (event: NostrEvent) : boolean => {
   return isReplaceableKind(event.kind)
 }
 
+export const isParameterizedReplaceableEvent = (event: NostrEvent) : boolean => {
+  return isParameterizedReplaceableKind(event.kind)
+}
+
 export const isEphemeralEvent = (event: NostrEvent) : boolean => {
   return isEphemeralKind(event.kind)
 }
-

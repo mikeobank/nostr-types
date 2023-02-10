@@ -50,3 +50,8 @@ export const isReplaceableKind = (kind: Kind) => {
 export const isEphemeralKind = (kind: Kind) => {
   return kind >= 20000 && kind < 30000
 }
+
+export const isParameterizedReplaceableKind = (kind: Kind) => {
+  return kind >= 30000 && kind < 40000
+}
+

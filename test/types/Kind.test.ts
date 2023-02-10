@@ -1,4 +1,4 @@
-import { isKind, areKinds, kindByName, getKind, isReplaceableKind, isEphemeralKind } from "../../src/types/Kind"
+import { isKind, areKinds, kindByName, getKind, isReplaceableKind, isEphemeralKind, isParameterizedReplaceableKind } from "../../src/types/Kind"
 
 test("isKind", () => {
   expect(isKind(-1)).toBeFalsy()
@@ -31,6 +31,12 @@ test("isReplaceableKind", () => {
   expect(isReplaceableKind(9999)).toBeFalsy()
   expect(isReplaceableKind(20000)).toBeFalsy()
   expect(isReplaceableKind(10000)).toBeTruthy()
+})
+
+test("isParameterizedReplaceableKind", () => {
+  expect(isParameterizedReplaceableKind(9999)).toBeFalsy()
+  expect(isParameterizedReplaceableKind(40000)).toBeFalsy()
+  expect(isParameterizedReplaceableKind(30000)).toBeTruthy()
 })
 
 test("isEphemeralKind", () => {
