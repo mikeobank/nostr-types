@@ -14,6 +14,7 @@ export const kinds = {
   42: "channel message",
   43: "hide message",
   44: "mute user",
+  1984: "reporting",
   22242: "client_authentication"
 }
 
