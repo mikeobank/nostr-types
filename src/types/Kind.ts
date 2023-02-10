@@ -8,7 +8,12 @@ export const kinds = {
   3: "contact_list",
   4: "encrypted_dm",
   5: "deletion",
-  7: "reaction"
+  7: "reaction",
+  40: "channel create",
+  41: "channel metadata",
+  42: "channel message",
+  43: "hide message",
+  44: "mute user"
 }
 
 export type Kind = UInt
