@@ -13,7 +13,8 @@ export const kinds = {
   41: "channel metadata",
   42: "channel message",
   43: "hide message",
-  44: "mute user"
+  44: "mute user",
+  22242: "client_authentication"
 }
 
 export type Kind = UInt

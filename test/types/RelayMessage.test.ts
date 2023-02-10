@@ -1,4 +1,15 @@
-import { createRelayEventMessage, createRelayNoticeMessage, createRelayEOSEMessage, createRelayOKMessage, isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage, isRelayOKMessage } from "../../src/types/RelayMessage"
+import {
+  createRelayEventMessage,
+  createRelayNoticeMessage,
+  createRelayEOSEMessage,
+  createRelayOKMessage,
+  createRelayAuthMessage,
+  isRelayEventMessage,
+  isRelayNoticeMessage,
+  isRelayEOSEMessage,
+  isRelayOKMessage,
+  isRelayAuthMessage
+} from "../../src/types/RelayMessage"
 import { createEvent } from "../../src/types/NostrEvent"
 import privateKey from "../privateKey"
 import hex32 from "../hex32"
@@ -35,6 +46,13 @@ test("createRelayOKMessage", async () => {
   expect(message[3]).toBe("pow: difficulty 25>=24")
 })
 
+test("createRelayAuthMessage", async () => {
+  const message = createRelayAuthMessage("challenge string")
+  expect(message.length).toBe(2)
+  expect(message[0]).toBe("AUTH")
+  expect(message[1]).toBe("challenge string")
+})
+
 test("isRelayEventMessage", async () => {
   const event = await createEvent(privateKey)(1, [], "a")
   const message = createRelayEventMessage("subscriptionId", event)
@@ -56,4 +74,9 @@ test("isRelayEOSEMessage", () => {
 test("isRelayOKMessage", () => {
   const message = createRelayOKMessage(hex32, true, "pow: difficulty 25>=24")
   expect(isRelayOKMessage(message)).toBeTruthy()
+})
+
+test("isRelayAuthMessage", () => {
+  const message = createRelayAuthMessage("challenge string")
+  expect(isRelayAuthMessage(message)).toBeTruthy()
 })

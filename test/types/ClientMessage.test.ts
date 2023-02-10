@@ -1,4 +1,4 @@
-import { createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "../../src/types/ClientMessage"
+import { createClientCloseMessage, createClientEventMessage, createClientReqMessage, createClientAuthMessage } from "../../src/types/ClientMessage"
 import { createEvent } from "../../src/types/NostrEvent"
 import privateKey from "../privateKey"
 
@@ -23,4 +23,12 @@ test("createClientCloseMessage", async () => {
   expect(message.length).toBe(2)
   expect(message[0]).toBe("CLOSE")
   expect(message[1]).toBe("subscriptionId")
+})
+
+test("createClientAuthMessage", async () => {
+  const event = await createEvent(privateKey)(22242, [["relay", "wss://example.com/"], ["challenge", "challenge string"]], "")
+  const message = createClientAuthMessage(event)
+  expect(message.length).toBe(2)
+  expect(message[0]).toBe("AUTH")
+  expect(message[1]).toBe(event)
 })

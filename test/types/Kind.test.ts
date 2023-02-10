@@ -43,4 +43,5 @@ test("isEphemeralKind", () => {
   expect(isEphemeralKind(19999)).toBeFalsy()
   expect(isEphemeralKind(31000)).toBeFalsy()
   expect(isEphemeralKind(20000)).toBeTruthy()
+  expect(isEphemeralKind(22242)).toBeTruthy()
 })
