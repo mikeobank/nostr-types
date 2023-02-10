@@ -15,6 +15,7 @@ export const kinds = {
   43: "hide message",
   44: "mute user",
   1984: "reporting",
+  10002: "relay_list_metadata",
   22242: "client_authentication"
 }
 
