@@ -1,6 +1,7 @@
-import { createRelayEventMessage, createRelayNoticeMessage, createRelayEOSEMessage, isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage } from "../../src/types/RelayMessage"
+import { createRelayEventMessage, createRelayNoticeMessage, createRelayEOSEMessage, createRelayOKMessage, isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage, isRelayOKMessage } from "../../src/types/RelayMessage"
 import { createEvent } from "../../src/types/NostrEvent"
 import privateKey from "../privateKey"
+import hex32 from "../hex32"
 
 test("createRelayEventMessage", async () => {
   const event = await createEvent(privateKey)(1, [], "a")
@@ -18,11 +19,20 @@ test("createRelayNoticeMessage", async () => {
   expect(message[1]).toBe("message")
 })
 
-test("createRelayEventMessage", async () => {
+test("createRelayEOSE", async () => {
   const message = createRelayEOSEMessage("subscriptionId")
   expect(message.length).toBe(2)
   expect(message[0]).toBe("EOSE")
   expect(message[1]).toBe("subscriptionId")
+})
+
+test("createRelayOKMessage", async () => {
+  const message = createRelayOKMessage(hex32, true, "pow: difficulty 25>=24")
+  expect(message.length).toBe(4)
+  expect(message[0]).toBe("OK")
+  expect(message[1]).toBe(hex32)
+  expect(message[2]).toBe(true)
+  expect(message[3]).toBe("pow: difficulty 25>=24")
 })
 
 test("isRelayEventMessage", async () => {
@@ -41,4 +51,9 @@ test("isRelayNoticeMessage", () => {
 test("isRelayEOSEMessage", () => {
   const message = createRelayEOSEMessage("subscriptionId")
   expect(isRelayEOSEMessage(message)).toBeTruthy()
+})
+
+test("isRelayOKMessage", () => {
+  const message = createRelayOKMessage(hex32, true, "pow: difficulty 25>=24")
+  expect(isRelayOKMessage(message)).toBeTruthy()
 })
