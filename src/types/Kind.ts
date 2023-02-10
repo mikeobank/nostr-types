@@ -7,7 +7,8 @@ export const kinds = {
   2: "recommend_server",
   3: "contact_list",
   4: "encrypted_dm",
-  5: "deletion"
+  5: "deletion",
+  7: "reaction"
 }
 
 export type Kind = UInt
