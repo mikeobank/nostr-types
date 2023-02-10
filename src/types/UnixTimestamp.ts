@@ -1,4 +1,5 @@
 import { isUInt } from "../lib/utils/isInt"
+import { is } from "../lib/utils/is"
 
 export type UnixTimestamp = number // unsigned int, Time in seconds since Unix Epoch
 
@@ -19,3 +20,9 @@ export const createUnixTimestamp = (date: string) : UnixTimestamp | undefined =>
 }
 
 export const now = () : UnixTimestamp => millisecondsToSeconds(Date.now())
+
+export const isInBetween = (unixTimestamp: UnixTimestamp, lower: UnixTimestamp, upper?: UnixTimestamp) : boolean => {
+  if (unixTimestamp < lower) return false
+  if (is(upper) && unixTimestamp > upper) return false
+  return true
+}
