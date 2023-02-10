@@ -22,6 +22,7 @@ export type Filters = {
   since?: UnixTimestamp
   until?: UnixTimestamp
   limit?: Limit
+  search?: string
   [genericTag: GenericTag]: string[]
 }
 
@@ -112,6 +113,13 @@ export const parseFilters = (value: unknown) : Filters => {
         filters.limit = value.limit
       } else {
         throw new Error(`${ value.limit } is not a valid number`)
+      }
+    }
+    if (is(value.search)) {
+      if (isString(value.search)) {
+        filters.search = value.search
+      } else {
+        throw new Error(`${ value.search } is not a valid string`)
       }
     }
     const tags = genericTags(value)
