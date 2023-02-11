@@ -2,7 +2,7 @@ import { Kind } from "./Kind"
 import { isPublicKeyHex, PublicKeyHex } from "./PublicKey"
 import { UnixTimestamp } from "./UnixTimestamp"
 import { is } from "../lib/utils/is"
-import { isUInt } from "../lib/utils/isInt"
+import { isUInt } from "../lib/utils/isNumber"
 import { isArrayOfSize } from "../lib/utils/isSize"
 import isString from "../lib/utils/isString"
 

@@ -1,4 +1,4 @@
-import { UInt, isUInt } from "../lib/utils/isInt"
+import { UInt, isUInt } from "../lib/utils/isNumber"
 import { isNot } from "../lib/utils/is"
 
 export const kinds = {

@@ -1,4 +1,4 @@
-import { isUInt } from "../lib/utils/isInt"
+import { isUInt } from "../lib/utils/isNumber"
 import { is } from "../lib/utils/is"
 
 export type UnixTimestamp = number // unsigned int, Time in seconds since Unix Epoch
