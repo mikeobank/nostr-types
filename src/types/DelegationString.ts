@@ -5,6 +5,7 @@ import { is } from "../lib/utils/is"
 import { isUInt } from "../lib/utils/isNumber"
 import { isArrayOfSize } from "../lib/utils/isSize"
 import isString from "../lib/utils/isString"
+import isIn from "../lib/utils/isIn"
 
 type ConditionsQueryString = string
 type DelegationString = `nostr:delegation:${ PublicKeyHex }:${ ConditionsQueryString }`
@@ -36,7 +37,7 @@ const parseCondition = (str: string) : Condition => {
     const uint = parseInt(d, 10)
     if (isUInt(uint)) {
       if (name === "kind" && compareChar === "=") return [name, uint, compareChar]
-      if (name === "created_at" && ["<", ">"].includes(compareChar)) return [name, uint, compareChar]
+      if (name === "created_at" && isIn(["<", ">"], compareChar)) return [name, uint, compareChar]
     }
   }
   throw new Error(`${ str } is not formatted as a correct condition`)

@@ -1,0 +1,1 @@
+export default <T>(arr: T[], value: T) : boolean => arr.includes(value as T)

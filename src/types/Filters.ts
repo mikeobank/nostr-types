@@ -6,15 +6,17 @@ import { Hex } from "./Hex"
 import sha256 from "../lib/sha256"
 import isArray from "../lib/utils/isArray"
 import { is } from "../lib/utils/is"
-import { isUInt } from "../lib/utils/isNumber"
+import { UInt, isUInt } from "../lib/utils/isNumber"
 import isObject from "../lib/utils/isObject"
 import { isNotEmpty } from "../lib/utils/isEmpty"
 import isString from "../lib/utils/isString"
+import isIn from "../lib/utils/isIn"
 
-type Limit = number // Unsigned Int
+type Limit = UInt
 const isLimit = (limit: unknown) : limit is Limit => isUInt(limit)
 
 type GenericTag = `#${ string }`
+const nonGenericTags = ["#e", "#p"]
 export type Filters = {
   ids?: IdPrefix[]
   authors?: PublicKeyHexPrefix[]
@@ -26,10 +28,11 @@ export type Filters = {
   [genericTag: GenericTag]: string[]
 }
 
+
 const genericTags = (filters: Record<string, unknown>) : GenericTag[] => {
   const isGenericTag = (key: string) : key is GenericTag => /^#[a-z]$/.test(key)
   const keys = Object.keys(filters)
-  return keys.filter(isGenericTag).filter(key => ["#e", "#p"].includes(key) === false)
+  return keys.filter(isGenericTag).filter(key => isIn(nonGenericTags, key) === false)
 }
 
 export const hashFilters = (filters: Filters) : Hex => {

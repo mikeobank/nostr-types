@@ -1,10 +1,11 @@
 import { isNotEmpty } from "../lib/utils/isEmpty"
+import isIn from "../lib/utils/isIn"
 
 export type RelayURL = string
 
-const protocols = ["ws", "wss"] as const
+const protocols = ["ws", "wss"]
 type Protocol = typeof protocols[number]
-const isProtocol = (protocol: string) : protocol is Protocol => protocols.includes(protocol as Protocol)
+const isProtocol = (protocol: unknown) : protocol is Protocol => isIn(protocols, protocol)
 
 const trimSlashes = (s: string) => s.replace(/^\/+/, "").replace(/\/+$/, "")
 

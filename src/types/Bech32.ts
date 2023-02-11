@@ -5,6 +5,7 @@ import isString from "../lib/utils/isString"
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils"
 import { isNot } from "../lib/utils/is"
 import { decode as utf8Decode } from "../lib/utf8encoder"
+import isIn from "../lib/utils/isIn"
 
 type Bech32 = string
 const hexPrefixes = ["npub", "nsec", "note"]
@@ -38,11 +39,11 @@ export const isBech32Prefix = (bech32: Bech32, prefixToMatch: Prefix) : boolean 
 }
 
 export const isHexPrefix = (prefix: Prefix) : boolean => {
-  return hexPrefixes.includes(prefix)
+  return isIn(hexPrefixes, prefix)
 }
 
 export const isTLVPrefix = (prefix: Prefix) : boolean => {
-  return tlvPrefixes.includes(prefix)
+  return isIn(tlvPrefixes, prefix)
 }
 
 export const bytesToBech32 = (bytes: Uint8Array, prefix: Prefix) : Bech32 => {
