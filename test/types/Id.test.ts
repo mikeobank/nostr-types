@@ -4,6 +4,11 @@ import { createHexFromUint8Array } from "../../src/types/Hex"
 import privateKey from "../privateKey"
 import hex32 from "../hex32"
 
+test("isId", () => {
+  expect(isId("")).toBeFalsy()
+  expect(isId(hex32)).toBeTruthy()
+})
+
 test("createId, isId", () => {
   const { publicKey } = createKeyPair(privateKey)
   const id = createId(createHexFromUint8Array(publicKey), 12345, 0, [], "")

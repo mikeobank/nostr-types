@@ -7,8 +7,8 @@ import { isArrayOfSize } from "../lib/utils/isSize"
 import isString from "../lib/utils/isString"
 import isIn from "../lib/utils/isIn"
 
-type ConditionsQueryString = string
-type DelegationString = `nostr:delegation:${ PublicKeyHex }:${ ConditionsQueryString }`
+export type ConditionsQueryString = string
+export type DelegationString = `nostr:delegation:${ PublicKeyHex }:${ ConditionsQueryString }`
 const conditionNames = ["kind", "created_at"]
 type ConditionName = typeof conditionNames[number]
 const compareChars = ["=", "<", ">"]
@@ -45,6 +45,18 @@ const parseCondition = (str: string) : Condition => {
 
 const parseConditionsQueryString = (str: string) : Conditions => {
   return str.split(separator).map(parseCondition)
+}
+
+export const isConditionsQueryString = (str: unknown) : boolean => {
+  if (isString(str)) {
+    try {
+      parseConditionsQueryString(str)
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+  return false
 }
 
 export const createDelegationString = (publicKey: PublicKeyHex, kinds: Kind[] = [], before?: UnixTimestamp, after?: UnixTimestamp) : DelegationString => {
