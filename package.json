@@ -10,7 +10,7 @@
     "build": "rm -rf dist && tsc --build",
     "examples:browser": "npx parcel example/index.html"
   },
-  "author": "Mike O'Bank",
+  "author": "Mike O'Bank <mike.obank@pm.me>",
   "devDependencies": {
     "@types/jest": "^29.2.5",
     "@types/websocket": "^1.0.5",
@@ -28,5 +28,18 @@
     "@scure/bip32": "^1.1.5",
     "@scure/bip39": "^1.1.1",
     "websocket": "^1.0.34"
-  }
+  },
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikeobank/nostr-types.git"
+  },
+  "keywords": [
+    "Nostr"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikeobank/nostr-types/issues"
+  },
+  "homepage": "https://github.com/mikeobank/nostr-types#readme"
 }
