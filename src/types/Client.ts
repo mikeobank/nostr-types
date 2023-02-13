@@ -16,6 +16,12 @@ type Callbacks = {
   onMessage?: (event: MessageEvent) => void
 }
 
+export type Client = {
+  sendEvent: (event: NostrEvent) => void
+  sendReq: (filters: Filters, subscriptionId?: SubscriptionId, overwrite?: boolean) => void
+  sendClose: (subscriptionId: SubscriptionId) => void
+}
+
 const onOpen = (event: Event) => {
   console.log("open", event)
 }
@@ -48,7 +54,7 @@ const onMessage = async (event: MessageEvent) => {
   }
 }
 
-export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOnOpen?: Filters, shouldLog = false) => {
+export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOnOpen?: Filters, shouldLog = false) : Client => {
 
   const webSocket = new WebSocket(url)
 
@@ -100,10 +106,6 @@ export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOn
   return {
     sendEvent,
     sendReq,
-    sendClose,
-    _webSocket: webSocket,
-    _subscriptions: subscriptions,
-    _callbacks: callbacks,
-    _shouldLog: shouldLog
+    sendClose
   }
 }
