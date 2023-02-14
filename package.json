@@ -10,7 +10,9 @@
     "build": "rm -rf dist && tsc --build",
     "examples:browser": "npx parcel example/index.html",
     "prepare" : "npm run build",
-    "prepublishOnly" : "npm test && npm run lint"
+    "prepublishOnly" : "npm test && npm run lint",
+    "postversion": "git push --tags origin main",
+    "publish:patch": "npm version patch && npm publish"
   },
   "author": "Mike O'Bank <mike.obank@pm.me>",
   "devDependencies": {
