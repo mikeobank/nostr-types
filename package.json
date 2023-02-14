@@ -8,7 +8,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "rm -rf dist && tsc --build",
-    "examples:browser": "npx parcel example/index.html"
+    "examples:browser": "npx parcel example/index.html",
+    "publish": "npm run build && npm version patch && npm publish"
   },
   "author": "Mike O'Bank <mike.obank@pm.me>",
   "devDependencies": {
