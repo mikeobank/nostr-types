@@ -7,8 +7,7 @@ import { NostrEvent, createEvent, isEvent, isEventSync } from "./NostrEvent"
 import type { PrivateKey, PublicKey } from "./KeyPair"
 import { appendTag } from "./Tag"
 import { encode, decode } from "../lib/utf8encoder"
-import subtleCryptoWrap from "../lib/subtleCrypto"
-
+import subtleCrypto from "../lib/subtleCrypto"
 
 type EncryptedText = Base64
 type IV = Base64
@@ -36,7 +35,6 @@ const parseEncryptedContent = (encryptedMessage: EncryptedText) : [EncryptedText
 }
 
 export const encrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, text: string) : Promise<EncryptedContent> => {
-  const subtleCrypto = await subtleCryptoWrap()
   const sharedSecret = secp.getSharedSecret(privateKey, nonSchnorrPublicKey(publicKey))
   const key = normalizeKey(sharedSecret)
   const iv = randomBytes(16)
@@ -59,7 +57,6 @@ export const encrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, 
 }
 
 export const decrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, encryptedMessage: EncryptedContent) : Promise<string> => {
-  const subtleCrypto = await subtleCryptoWrap()
   const [cipherTextBase64, ivBase64] = parseEncryptedContent(encryptedMessage)
   const sharedSecret = secp.getSharedSecret(privateKey, nonSchnorrPublicKey(publicKey))
   const key = normalizeKey(sharedSecret)
