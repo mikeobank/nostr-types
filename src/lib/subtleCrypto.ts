@@ -1,3 +1,5 @@
 import isBrowser from "./utils/isBrowser"
 
-export default isBrowser ? window.crypto.subtle : require("crypto").webcrypto.subtle
+export default async () => {
+  return isBrowser ? window.crypto.subtle : (await import("crypto")).webcrypto.subtle
+}
