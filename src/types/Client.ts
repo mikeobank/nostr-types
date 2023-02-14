@@ -2,23 +2,29 @@ import type { Filters } from "./Filters"
 import type { RelayURL } from "./RelayURL"
 import { NostrEvent, parseEvent } from "./NostrEvent"
 
-import { ClientMessage, createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "./ClientMessage"
+import { ClientMessage, createClientAuthMessage, createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "./ClientMessage"
 import { SubscriptionId, createSubscriptionId } from "./SubscriptionId"
-import { isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage } from "./RelayMessage"
-import { isNotEmpty } from "../lib/utils/isEmpty"
+import { isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage, RelayEventMessage, RelayNoticeMessage, RelayEOSEMessage, RelayOKMessage, RelayAuthMessage, isRelayAuthMessage, isRelayOKMessage } from "./RelayMessage"
 import WebSocket from "../lib/websocket"
+import { is } from "../lib/utils/is"
 
 type Callbacks = {
   onOpen?: (event: Event) => void
   onError?: (event: Event) => void
   onClose?: (event: CloseEvent) => void
   onMessage?: (event: MessageEvent) => void
+  onEventMessage?: (event: RelayEventMessage) => void
+  onNoticeMessage?: (event: RelayNoticeMessage) => void
+  onEOSEMessage?: (event: RelayEOSEMessage) => void
+  onOKMessage?: (event: RelayOKMessage) => void
+  onAuthMessage?: (event: RelayAuthMessage) => void
 }
 
 export type Client = {
   sendEvent: (event: NostrEvent) => void
   sendReq: (filters: Filters, subscriptionId?: SubscriptionId, overwrite?: boolean) => void
   sendClose: (subscriptionId: SubscriptionId) => void
+  sendAuth: (event: NostrEvent) => void
 }
 
 const maxLengthSubscriptionId = 16
@@ -36,13 +42,11 @@ const onClose = (event: CloseEvent) => {
 }
 
 const onMessage = async (event: MessageEvent) => {
-  const data = event.data
+  const { data } = event
   if (await isRelayEventMessage(data)) {
     try {
       const nostrEvent = await parseEvent(data[2])
-      if (isNotEmpty(nostrEvent)) {
-        console.log("EVENT: ", data[1], nostrEvent)
-      }
+      console.log("EVENT: ", data[1], nostrEvent)
     } catch (err) {
       console.error(err)
     }
@@ -50,6 +54,15 @@ const onMessage = async (event: MessageEvent) => {
     console.log("NOTICE: ", data[1])
   } else if (isRelayEOSEMessage(data)) {
     console.log("EOSE: ", data[1])
+  } else if (isRelayOKMessage(data)) {
+    console.log("OK: ", data[1], data[2], data[3])
+  } else if (await isRelayAuthMessage(data)) {
+    try {
+      const nostrEvent = await parseEvent(data[2])
+      console.log("AUTH: ", nostrEvent)
+    } catch (err) {
+      console.error(err)
+    }
   } else {
     console.log("NON NOSTR EVENT: ", event)
   }
@@ -61,20 +74,26 @@ export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOn
 
   webSocket.onopen = (event: Event) => {
     if (shouldLog) onOpen(event)
-    if (callbacks.onOpen !== undefined) callbacks.onOpen(event)
-    if (requestOnOpen !== undefined) sendReq(requestOnOpen)
+    if (is(callbacks.onOpen)) callbacks.onOpen(event)
+    if (is(requestOnOpen)) sendReq(requestOnOpen)
   }
   webSocket.onerror = (event: Event) => {
     if (shouldLog) onError(event)
-    if (callbacks.onError !== undefined) callbacks.onError(event)
+    if (is(callbacks.onError)) callbacks.onError(event)
   }
   webSocket.onclose = (event: CloseEvent) => {
     if (shouldLog) onClose(event)
-    if (callbacks.onClose !== undefined) callbacks.onClose(event)
+    if (is(callbacks.onClose)) callbacks.onClose(event)
   }
-  webSocket.onmessage = (event: MessageEvent) => {
+  webSocket.onmessage = async (event: MessageEvent) => {
     if (shouldLog) onMessage(event)
-    if (callbacks.onMessage !== undefined) callbacks.onMessage(event)
+    if (is(callbacks.onMessage)) callbacks.onMessage(event)
+    const { data } = event
+    if (await isRelayEventMessage(data) && is(callbacks.onEventMessage)) callbacks.onEventMessage(data as RelayEventMessage)
+    if (isRelayNoticeMessage(data) && is(callbacks.onNoticeMessage)) callbacks.onNoticeMessage(data as RelayNoticeMessage)
+    if (isRelayEOSEMessage(data) && is(callbacks.onEOSEMessage)) callbacks.onEOSEMessage(data as RelayEOSEMessage)
+    if (isRelayOKMessage(data) && is(callbacks.onOKMessage)) callbacks.onOKMessage(data as RelayOKMessage)
+    if (await isRelayAuthMessage(data) && is(callbacks.onAuthMessage)) callbacks.onAuthMessage(data as RelayAuthMessage)
   }
 
   const subscriptions: Record<SubscriptionId, Filters> = {}
@@ -104,9 +123,14 @@ export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOn
     removeSubscription(subscriptionId)
   }
 
+  const sendAuth = (event: NostrEvent) => {
+    send(createClientAuthMessage(event))
+  }
+
   return {
     sendEvent,
     sendReq,
-    sendClose
+    sendClose,
+    sendAuth
   }
 }
