@@ -21,6 +21,8 @@ export type Client = {
   sendClose: (subscriptionId: SubscriptionId) => void
 }
 
+const maxLengthSubscriptionId = 16
+
 const onOpen = (event: Event) => {
   console.log("open", event)
 }
@@ -89,7 +91,7 @@ export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOn
     send(createClientEventMessage(event))
   }
 
-  const sendReq = (filters: Filters, subscriptionId: SubscriptionId = createSubscriptionId(filters, 32), overwrite = false) => {
+  const sendReq = (filters: Filters, subscriptionId: SubscriptionId = createSubscriptionId(filters, maxLengthSubscriptionId), overwrite = false) => {
     // guard against duplicate filters
     if (overwrite === false && hasSubscription(subscriptionId)) return
     addSubscription(subscriptionId, filters)
