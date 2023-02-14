@@ -12,7 +12,7 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "postversion": "git push --tags origin main",
-    "publish:patch": "npm version patch && npm publish"
+    "publish:patch": "npm run prepare && npm version patch && npm publish"
   },
   "author": "Mike O'Bank <mike.obank@pm.me>",
   "devDependencies": {
