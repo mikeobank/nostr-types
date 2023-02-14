@@ -21,7 +21,7 @@ export type Client = {
   sendClose: (subscriptionId: SubscriptionId) => void
 }
 
-const maxLengthSubscriptionId = 16
+const maxLengthSubscriptionId = 8
 
 const onOpen = (event: Event) => {
   console.log("open", event)
