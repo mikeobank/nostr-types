@@ -3,8 +3,7 @@ import type { RelayURL } from "./RelayURL"
 import { NostrEvent, parseEvent } from "./NostrEvent"
 
 import { ClientMessage, createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "./ClientMessage"
-import { SubscriptionId } from "./SubscriptionId"
-import { hashFilters } from "./Filters"
+import { SubscriptionId, createSubscriptionId } from "./SubscriptionId"
 import { isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage } from "./RelayMessage"
 import { isNotEmpty } from "../lib/utils/isEmpty"
 import WebSocket from "../lib/websocket"
@@ -90,7 +89,7 @@ export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOn
     send(createClientEventMessage(event))
   }
 
-  const sendReq = (filters: Filters, subscriptionId: SubscriptionId = hashFilters(filters), overwrite = false) => {
+  const sendReq = (filters: Filters, subscriptionId: SubscriptionId = createSubscriptionId(filters, 32), overwrite = false) => {
     // guard against duplicate filters
     if (overwrite === false && hasSubscription(subscriptionId)) return
     addSubscription(subscriptionId, filters)

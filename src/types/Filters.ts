@@ -2,8 +2,6 @@ import { IdPrefix, areIds, areIdPrefixes } from "./Id"
 import { PublicKeyHexPrefix, arePublicKeyHexes, arePublicKeyHexPrefixes } from "./PublicKey"
 import { Kind, areKinds } from "./Kind"
 import { isUnixTimestamp, UnixTimestamp } from "./UnixTimestamp"
-import { Hex } from "./Hex"
-import sha256 from "../lib/sha256"
 import isArray from "../lib/utils/isArray"
 import { is } from "../lib/utils/is"
 import { UInt, isUInt } from "../lib/utils/isNumber"
@@ -33,10 +31,6 @@ const genericTags = (filters: Record<string, unknown>) : GenericTag[] => {
   const isGenericTag = (key: string) : key is GenericTag => /^#[a-z]$/.test(key)
   const keys = Object.keys(filters)
   return keys.filter(isGenericTag).filter(key => isIn(nonGenericTags, key) === false)
-}
-
-export const hashFilters = (filters: Filters) : Hex => {
-  return sha256(JSON.stringify(filters))
 }
 
 export const parseFilters = (value: unknown) : Filters => {
