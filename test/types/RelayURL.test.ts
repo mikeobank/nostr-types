@@ -1,6 +1,7 @@
-import { createRelayURL, isRelayURL } from "../../src/types/RelayURL"
+import { createRelayURL, isRelayURL, areRelayURLs } from "../../src/types/RelayURL"
 
 test("isRelayURL", () => {
+  expect(isRelayURL(3)).toBeFalsy()
   expect(isRelayURL("")).toBeFalsy()
   expect(isRelayURL("example.com")).toBeFalsy()
   expect(isRelayURL("https://example.com")).toBeFalsy()
@@ -8,6 +9,11 @@ test("isRelayURL", () => {
   expect(isRelayURL("wss://example.com")).toBeTruthy()
   expect(isRelayURL("wss://sub.domain.example.com")).toBeTruthy()
   expect(isRelayURL("wss://example.com/path")).toBeTruthy()
+})
+
+test("areRelayURLs", () => {
+  expect(areRelayURLs("ws://example.com")).toBeFalsy()
+  expect(areRelayURLs(["ws://example.com", "wss://sub.domain.example.com"])).toBeTruthy()
 })
 
 test("createRelayURL", () => {

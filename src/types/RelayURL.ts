@@ -1,7 +1,10 @@
+import isArray from "../lib/utils/isArray"
 import { isNotEmpty } from "../lib/utils/isEmpty"
 import isIn from "../lib/utils/isIn"
+import isString from "../lib/utils/isString"
 
 export type RelayURL = string
+export type RelayURLs = RelayURL[]
 
 const protocols = ["ws", "wss"]
 type Protocol = typeof protocols[number]
@@ -14,11 +17,21 @@ export const createRelayURL = (domain: string, path = "", protocol: Protocol = "
   return `${ protocol }://${ domainAndPath }`
 }
 
-export const isRelayURL = (relayURL: string) : relayURL is RelayURL => {
-  try {
-    const url = new URL(relayURL)
-    return isProtocol(url.protocol.replace(/:$/, ""))
-  } catch (err) {
-    return false
+export const isRelayURL = (relayURL: unknown) : relayURL is RelayURL => {
+  if (isString(relayURL)) {
+    try {
+      const url = new URL(relayURL)
+      return isProtocol(url.protocol.replace(/:$/, ""))
+    } catch (err) {
+      return false
+    }
   }
+  return false
+}
+
+export const areRelayURLs = (relayURLs: unknown) : relayURLs is RelayURLs => {
+  if (isArray(relayURLs) && isNotEmpty(relayURLs)) {
+    return relayURLs.every(isRelayURL)
+  }
+  return false
 }
