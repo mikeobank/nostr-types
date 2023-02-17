@@ -1,11 +1,11 @@
 import type { Filters } from "./Filters"
 import type { RelayURL } from "./RelayURL"
+import WebSocket from "../lib/websocket"
 import { NostrEvent, parseEvent } from "./NostrEvent"
-
 import { ClientMessage, createClientAuthMessage, createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "./ClientMessage"
 import { SubscriptionId, createSubscriptionId } from "./SubscriptionId"
 import { isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage, RelayEventMessage, RelayNoticeMessage, RelayEOSEMessage, RelayOKMessage, RelayAuthMessage, isRelayAuthMessage, isRelayOKMessage } from "./RelayMessage"
-import WebSocket from "../lib/websocket"
+import { tryParseMessageEventData } from "./WebsocketMessageEvent"
 import { is } from "../lib/utils/is"
 
 type Callbacks = {
@@ -42,11 +42,12 @@ const onClose = (event: CloseEvent) => {
 }
 
 const onMessage = async (event: MessageEvent) => {
-  const { data } = event
+  const data = tryParseMessageEventData(event.data)
   if (await isRelayEventMessage(data)) {
+    const relayEventMessage = data as RelayEventMessage
     try {
-      const nostrEvent = await parseEvent(data[2])
-      console.log("EVENT: ", data[1], nostrEvent)
+      const nostrEvent = await parseEvent(relayEventMessage[2])
+      console.log("EVENT: ", relayEventMessage[1], nostrEvent)
     } catch (err) {
       console.error(err)
     }
@@ -56,13 +57,8 @@ const onMessage = async (event: MessageEvent) => {
     console.log("EOSE: ", data[1])
   } else if (isRelayOKMessage(data)) {
     console.log("OK: ", data[1], data[2], data[3])
-  } else if (await isRelayAuthMessage(data)) {
-    try {
-      const nostrEvent = await parseEvent(data[2])
-      console.log("AUTH: ", nostrEvent)
-    } catch (err) {
-      console.error(err)
-    }
+  } else if (isRelayAuthMessage(data)) {
+    console.log("AUTH: ", data[1])
   } else {
     console.log("NON NOSTR EVENT: ", event)
   }
@@ -88,12 +84,12 @@ export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOn
   webSocket.onmessage = async (event: MessageEvent) => {
     if (shouldLog) onMessage(event)
     if (is(callbacks.onMessage)) callbacks.onMessage(event)
-    const { data } = event
-    if (await isRelayEventMessage(data) && is(callbacks.onEventMessage)) callbacks.onEventMessage(data as RelayEventMessage)
-    if (isRelayNoticeMessage(data) && is(callbacks.onNoticeMessage)) callbacks.onNoticeMessage(data as RelayNoticeMessage)
-    if (isRelayEOSEMessage(data) && is(callbacks.onEOSEMessage)) callbacks.onEOSEMessage(data as RelayEOSEMessage)
-    if (isRelayOKMessage(data) && is(callbacks.onOKMessage)) callbacks.onOKMessage(data as RelayOKMessage)
-    if (await isRelayAuthMessage(data) && is(callbacks.onAuthMessage)) callbacks.onAuthMessage(data as RelayAuthMessage)
+    const data = tryParseMessageEventData(event.data)
+    if (is(callbacks.onEventMessage) && await isRelayEventMessage(data)) callbacks.onEventMessage(data as RelayEventMessage)
+    if (is(callbacks.onNoticeMessage) && isRelayNoticeMessage(data)) callbacks.onNoticeMessage(data)
+    if (is(callbacks.onEOSEMessage) && isRelayEOSEMessage(data)) callbacks.onEOSEMessage(data)
+    if (is(callbacks.onOKMessage) && isRelayOKMessage(data)) callbacks.onOKMessage(data)
+    if (is(callbacks.onAuthMessage) && isRelayAuthMessage(data)) callbacks.onAuthMessage(data)
   }
 
   const subscriptions: Record<SubscriptionId, Filters> = {}

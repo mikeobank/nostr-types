@@ -20,30 +20,26 @@ export const createRelayEOSEMessage = (subscriptionId: SubscriptionId) : RelayEO
 export const createRelayOKMessage = (id: Id, result: boolean, message: string) : RelayOKMessage => ["OK", id, result, message]
 export const createRelayAuthMessage = (challengeString: ChallengeString) : RelayAuthMessage => ["AUTH", challengeString]
 
-export const isRelayEventMessage = async (message: unknown) : Promise<boolean> => {
-  return isArrayOfSize(message, 3) && message[0] === "EVENT" && isSubscriptionId(message[1]) && await isEvent(message[2])
+export const isRelayEventMessage = async (messageData: unknown) : Promise<boolean> => {
+  return isArrayOfSize(messageData, 3) && messageData[0] === "EVENT" && isSubscriptionId(messageData[1]) && await isEvent(messageData[2])
 }
 
-export const isRelayEventMessageSync = (message: unknown) : message is RelayEventMessage => {
-  return isArrayOfSize(message, 3) && message[0] === "EVENT" && isSubscriptionId(message[1]) && isEventSync(message[2])
+export const isRelayEventMessageSync = (messageData: unknown) : messageData is RelayEventMessage => {
+  return isArrayOfSize(messageData, 3) && messageData[0] === "EVENT" && isSubscriptionId(messageData[1]) && isEventSync(messageData[2])
 }
 
-export const isRelayNoticeMessage = (message: unknown) : message is RelayNoticeMessage => {
-  return isArrayOfSize(message, 2) && message[0] === "NOTICE" && isString(message[1])
+export const isRelayNoticeMessage = (messageData: unknown) : messageData is RelayNoticeMessage => {
+  return isArrayOfSize(messageData, 2) && messageData[0] === "NOTICE" && isString(messageData[1])
 }
 
-export const isRelayEOSEMessage = (message: unknown) : message is RelayEOSEMessage => {
-  return isArrayOfSize(message, 2) && message[0] === "EOSE" && isSubscriptionId(message[1])
+export const isRelayEOSEMessage = (messageData: unknown) : messageData is RelayEOSEMessage => {
+  return isArrayOfSize(messageData, 2) && messageData[0] === "EOSE" && isSubscriptionId(messageData[1])
 }
 
-export const isRelayOKMessage = (message: unknown) : message is RelayOKMessage => {
-  return isArrayOfSize(message, 4) && message[0] === "OK" && isId(message[1]) && isBoolean(message[2]) && isString(message[3])
+export const isRelayOKMessage = (messageData: unknown) : messageData is RelayOKMessage => {
+  return isArrayOfSize(messageData, 4) && messageData[0] === "OK" && isId(messageData[1]) && isBoolean(messageData[2]) && isString(messageData[3])
 }
 
-export const isRelayAuthMessage = async (message: unknown) : Promise<boolean> => {
-  return isArrayOfSize(message, 2) && message[0] === "AUTH" && await isEvent(message[1])
-}
-
-export const isRelayAuthMessageSync = (message: unknown) : message is RelayAuthMessage => {
-  return isArrayOfSize(message, 2) && message[0] === "AUTH" && isEventSync(message[1])
+export const isRelayAuthMessage = (messageData: unknown) : messageData is RelayAuthMessage => {
+  return isArrayOfSize(messageData, 2) && messageData[0] === "AUTH" && isString(messageData[1])
 }
