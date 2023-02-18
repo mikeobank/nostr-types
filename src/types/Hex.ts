@@ -1,4 +1,5 @@
 import * as secp256k1 from "@noble/secp256k1"
+import { is, isNot } from "../lib/utils/is"
 
 export type Hex = string
 export type Hex32Bytes = string
@@ -8,12 +9,12 @@ const regex = /^[0-9a-f]*$/
 
 export const isHex = (s: string) : s is Hex => regex.test(s)
 export const isHexOfLength = (s: string, min: number, max?: number) : s is Hex => {
-  if (max !== undefined && min >= max) throw new Error(`max: ${ max } is less than min: ${ min }`)
+  if (is(max) && min >= max) throw new Error(`max: ${ max } is less than min: ${ min }`)
   if (isHex(s) === false) return false
   const l = s.length
   if (l < min) return false
-  if (max === undefined && l > min) return false
-  if (max !== undefined && l > max) return false
+  if (isNot(max) && l > min) return false
+  if (is(max) && l > max) return false
   return true
 }
 export const isHex32Bytes = (s: string) : s is Hex32Bytes => isHexOfLength(s, 32 * 2)

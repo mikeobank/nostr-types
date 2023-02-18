@@ -94,7 +94,7 @@ export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOn
 
   const subscriptions: Record<SubscriptionId, Filters> = {}
   const getSubscription = (id: SubscriptionId) => subscriptions[id]
-  const hasSubscription = (id: SubscriptionId) => getSubscription(id) !== undefined
+  const hasSubscription = (id: SubscriptionId) => is(getSubscription(id))
   const addSubscription = (id: SubscriptionId, filters: Filters) => subscriptions[id] = filters
   const removeSubscription = (id: SubscriptionId) => delete subscriptions[id]
 

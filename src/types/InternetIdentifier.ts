@@ -1,3 +1,4 @@
+import { isArrayOfSize } from "../lib/utils/isSize"
 import isString from "../lib/utils/isString"
 
 type Domain = string
@@ -16,7 +17,7 @@ export const isLocalPart = (localPart: unknown) : localPart is LocalPart => {
 
 export const parseInternetIdentifier = (internetIdentifier: string) : [LocalPart, Domain]=> {
   const parts = internetIdentifier.split("@")
-  if (parts.length !== 2 || isLocalPart(parts[0]) === false || isDomain(parts[1]) === false) {
+  if (isArrayOfSize(parts, 2) === false || isLocalPart(parts[0]) === false || isDomain(parts[1]) === false) {
     throw new Error("Invalid Internet Identifier")
   }
   return parts as [LocalPart, Domain]

@@ -8,6 +8,7 @@ import { PublicKey, PrivateKey, createKeyPair } from "./KeyPair"
 import { Content, isContent } from "./Content"
 import toArray from "../lib/utils/toArray"
 import isObject from "../lib/utils/isObject"
+import { is } from "../lib/utils/is"
 
 export type NostrEvent = {
   id: Id
@@ -148,21 +149,21 @@ export const parseEvents = async (events: unknown, shouldLogErrors = false) : Pr
   return (await Promise.all(
       toArray(events).map(async event => await tryParseEvent(event, shouldLogErrors))
     ))
-    .filter((event) : event is NostrEvent => event !== undefined)
+    .filter(is)
 }
 
 export const parseEventsSync = (events: unknown, shouldLogErrors = false) : NostrEvent[] => {
   return toArray(events)
     .map(event => tryParseEventSync(event, shouldLogErrors))
-    .filter((event) : event is NostrEvent => event !== undefined)
+    .filter(is)
 }
 
 export const isEvent = async (event: unknown) : Promise<boolean> => {
-  return await tryParseEvent(event, false) !== undefined
+  return is(await tryParseEvent(event, false))
 }
 
 export const isEventSync = (event: unknown) : event is NostrEvent => {
-  return tryParseEventSync(event, false) !== undefined
+  return is(tryParseEventSync(event, false))
 }
 
 export const isReplaceableEvent = (event: NostrEvent) : boolean => {
