@@ -1,1 +1,1 @@
-export default <T>(item: T) : T[] => Array.isArray(item) ? item : [item]
+export default <T>(item: T | T[]) : T[] => Array.isArray(item) ? item : [item]
