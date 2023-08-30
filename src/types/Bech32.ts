@@ -19,7 +19,7 @@ type TLV = [Uint8, Uint8, Uint8Array]
 export const isBech32 = (bech32: unknown) : bech32 is Bech32 => {
   if (isString(bech32)) {
     try {
-      baseBech32.decode(bech32)
+      baseBech32.decode(bech32, false)
       return true
     } catch (err) {
       return false

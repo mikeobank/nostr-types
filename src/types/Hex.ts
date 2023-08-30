@@ -1,4 +1,4 @@
-import * as secp256k1 from "@noble/secp256k1"
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils"
 import { is, isNot } from "../lib/utils/is"
 
 export type Hex = string
@@ -27,10 +27,10 @@ export const parseHex = (s: string) : Hex => {
 }
 
 export const createHexFromUint8Array = (arr: Uint8Array) : Hex => {
-  const s = secp256k1.utils.bytesToHex(arr)
+  const s = bytesToHex(arr)
   return parseHex(s)
 }
 
 export const createUint8ArrayFromHex = (hex: Hex) : Uint8Array => {
-  return secp256k1.utils.hexToBytes(hex)
+  return hexToBytes(hex)
 }

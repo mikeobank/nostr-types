@@ -27,7 +27,8 @@ test("verifyEvent with invalid id", async () => {
 
 test("verifyEvent with invalid signature", async () => {
   const event = await createEvent(privateKey)(0)
-  event.sig = "invalid"
+  const event2 = await createEvent(privateKey)(0, undefined, "invalid")
+  event.sig = event2.sig
   expect(await verifyEvent(event)).toBeFalsy()
   expect(verifyEventSync(event)).toBeFalsy()
 })

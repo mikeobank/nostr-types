@@ -1,4 +1,4 @@
-import * as secp from "@noble/secp256k1"
+import { secp256k1 } from "@noble/curves/secp256k1"
 import { randomBytes } from "@noble/hashes/utils"
 
 import { Base64, isBase64, base64ToBytes, bytesToBase64 } from "./Base64"
@@ -35,7 +35,7 @@ const parseEncryptedContent = (encryptedMessage: EncryptedText) : [EncryptedText
 }
 
 export const encrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, text: string) : Promise<EncryptedContent> => {
-  const sharedSecret = secp.getSharedSecret(privateKey, nonSchnorrPublicKey(publicKey))
+  const sharedSecret = secp256k1.getSharedSecret(privateKey, nonSchnorrPublicKey(publicKey))
   const key = normalizeKey(sharedSecret)
   const iv = randomBytes(16)
   const plainText = encode(text)
@@ -58,7 +58,7 @@ export const encrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, 
 
 export const decrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, encryptedMessage: EncryptedContent) : Promise<string> => {
   const [cipherTextBase64, ivBase64] = parseEncryptedContent(encryptedMessage)
-  const sharedSecret = secp.getSharedSecret(privateKey, nonSchnorrPublicKey(publicKey))
+  const sharedSecret = secp256k1.getSharedSecret(privateKey, nonSchnorrPublicKey(publicKey))
   const key = normalizeKey(sharedSecret)
   const cryptoKey = await subtleCrypto.importKey(
     format,

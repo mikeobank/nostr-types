@@ -1,4 +1,4 @@
-import * as secp256k1 from "@noble/secp256k1"
+import { schnorr } from "@noble/curves/secp256k1"
 
 export type PrivateKey = Uint8Array
 export type PublicKey = Uint8Array
@@ -8,7 +8,7 @@ export type KeyPair = {
 }
 
 export const createKeyPair = (privateKey: PrivateKey) : KeyPair => {
-  const publicKey = secp256k1.schnorr.getPublicKey(privateKey)
+  const publicKey = schnorr.getPublicKey(privateKey)
   return {
     privateKey,
     publicKey
@@ -16,7 +16,7 @@ export const createKeyPair = (privateKey: PrivateKey) : KeyPair => {
 }
 
 export const generatePrivateKey = () : PrivateKey => {
-  return secp256k1.utils.randomPrivateKey()
+  return schnorr.utils.randomPrivateKey()
 }
 
 export const generateKeyPair = () : KeyPair => {
