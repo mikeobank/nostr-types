@@ -24,7 +24,7 @@ Nostr types. Factory, validation, and parsing functions in Typescript.
 - [x] NIP-02: Contact List and Petnames
 - [x] NIP-03: OpenTimestamps Attestations for Events
   - Base64
-- NostrEventOTS
+  - NostrEventOTS
 - [x] NIP-04: Encrypted Direct Message
   - EncryptedDM
 - [x] NIP-05: Mapping Nostr keys to DNS-based internet identifiers
@@ -42,7 +42,7 @@ Nostr types. Factory, validation, and parsing functions in Typescript.
 - [ ] NIP-15: Nostr Marketplace (for resilient marketplaces)
 - [x] NIP-18: Reposts
 - [x] NIP-19: bech32-encoded entities
-- Bech32
+  - Bech32
 - [ ] NIP-21: nostr: URI scheme
 - [x] NIP-22: Event created_at Limits
 - [x] NIP-23: Long-form Content
