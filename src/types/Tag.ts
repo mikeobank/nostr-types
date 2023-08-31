@@ -210,6 +210,7 @@ export const isRTag = (tag: unknown) : tag is RTag => {
 
 export const isSpecificTag = <T extends SpecificTag>(tag: T) : boolean => {
   const [tagName] = tag
+  // @TODO: Sort alphabetically
   switch (tagName) {
     case "e":
       return isETag(tag)
