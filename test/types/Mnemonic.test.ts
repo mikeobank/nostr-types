@@ -77,8 +77,7 @@ test("test vectors 24", async () => {
   expect(bytesToBech32(publicKey, "npub")).toBe("npub16sdj9zv4f8sl85e45vgq9n7nsgt5qphpvmf7vk8r5hhvmdjxx4es8rq74h")
 })
 
-
-
+/*
 xtest("generate 12 word mnemonic", async () => {
   const mnemonic = generateMnemonic()
   const privateKey = await getPrivateKeyFromMnenomic(mnemonic)
@@ -93,3 +92,4 @@ xtest("generate 12 word mnemonic", async () => {
     npub: ${ npub }
   `)
 })
+*/
