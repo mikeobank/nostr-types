@@ -1,6 +1,6 @@
 {
   "name": "nostr-types",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Nostr types",
   "main": "dist/index.js",
   "scripts": {
