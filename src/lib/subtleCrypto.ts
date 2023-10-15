@@ -1,4 +1,4 @@
-import { webcrypto } from "crypto"
 import isBrowser from "./utils/isBrowser"
 
-export default isBrowser ? window.crypto.subtle : webcrypto.subtle
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+export default isBrowser ? window.crypto.subtle : require("crypto").webcrypto.subtle
