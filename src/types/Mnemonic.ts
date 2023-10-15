@@ -1,6 +1,28 @@
-import { wordlists, validateMnemonic, generateMnemonic as bip39GenerateMnemonic, mnemonicToSeed } from "bip39"
-import BIP32Factory from 'bip32'
-import * as ecc from 'tiny-secp256k1'
+import { validateMnemonic, generateMnemonic as bip39GenerateMnemonic, mnemonicToSeed } from "@scure/bip39"
+import { wordlist as chinese_simplified } from "@scure/bip39/wordlists/simplified-chinese"
+import { wordlist as chinese_traditional } from "@scure/bip39/wordlists/traditional-chinese"
+import { wordlist as czech } from "@scure/bip39/wordlists/czech"
+import { wordlist as english } from "@scure/bip39/wordlists/english"
+import { wordlist as french } from "@scure/bip39/wordlists/french"
+import { wordlist as italian } from "@scure/bip39/wordlists/italian"
+import { wordlist as japanese } from "@scure/bip39/wordlists/japanese"
+import { wordlist as korean } from "@scure/bip39/wordlists/korean"
+import { wordlist as spanish } from "@scure/bip39/wordlists/spanish"
+const wordlists = {
+  chinese_simplified,
+  chinese_traditional,
+  czech,
+  english,
+  french,
+  italian,
+  japanese,
+  korean,
+  spanish
+}
+import { HDKey } from "@scure/bip32"
+
+//import BIP32Factory from "bip32"
+//import * as ecc from "tiny-secp256k1"
 
 import { PrivateKey } from "./KeyPair"
 import { isUInt } from "../lib/utils/isNumber"
@@ -48,7 +70,7 @@ export const createMnemonic = (str: string, language: Language = defaultLanguage
 export const generateMnemonic = (length: 12 | 24 = 12, language: Language = defaultLanguage) : Mnemonic => {
   const strength = length === 24 ? 256 : 128
   const wordlist = wordlists[language]
-  return createMnemonic(bip39GenerateMnemonic(strength, undefined, wordlist), language)
+  return createMnemonic(bip39GenerateMnemonic(wordlist, strength), language)
 }
 
 export const isPassphrase = (passphrase: unknown) : passphrase is Passphrase => {
@@ -66,11 +88,10 @@ export const createDerivationPath = (account: Account = 0) : DerivationPath => {
 
 export const getPrivateKeyFromMnenomic = async (mnemonic: Mnemonic, language: Language = defaultLanguage, passphrase?: Passphrase, account: Account = 0) : Promise<PrivateKey> => {
   if (isMnemonic(mnemonic, language) === false) throw new Error("Invalid mnemonic")
-  const buffer = await mnemonicToSeed(mnemonicToString(mnemonic), passphrase)
-  const bip32 = BIP32Factory(ecc)
-  const node = bip32.fromSeed(buffer)
+  const seed = await mnemonicToSeed(mnemonicToString(mnemonic), passphrase)
+  const hdkey = HDKey.fromMasterSeed(seed)
   const path = createDerivationPath(account)
-  const { privateKey } = node.derivePath(path)
+  const { privateKey } = hdkey.derive(path)
   if (isNot(privateKey)) throw new Error("Could not get private key from mnemonic")
-  return new Uint8Array(privateKey)
+  return privateKey
 }
