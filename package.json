@@ -40,7 +40,7 @@
     "@scure/bip39": "^1.2.1",
     "websocket": "^1.0.34"
   },
-  "types": "./dist/index.d.ts",
+  "types": "./esm/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mikeobank/nostr-types.git"
