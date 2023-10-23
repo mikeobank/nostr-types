@@ -1,10 +1,10 @@
 import { schnorr } from "@noble/curves/secp256k1"
 
-import { createKeyPair, PrivateKey, PublicKey } from "./KeyPair"
-import type { Id } from "./Id"
-import { createHexFromUint8Array, createUint8ArrayFromHex, isHex64Bytes } from "./Hex"
-import { PublicKeyHex } from "./PublicKey"
-import isString from "../lib/utils/isString"
+import { createKeyPair, PrivateKey, PublicKey } from "./KeyPair.js"
+import type { Id } from "./Id.js"
+import { createHexFromUint8Array, createUint8ArrayFromHex, isHex64Bytes } from "./Hex.js"
+import { PublicKeyHex } from "./PublicKey.js"
+import isString from "../lib/utils/isString.js"
 
 export type SignatureHex = string // 64 bytes hex encoded
 type Signature = Uint8Array

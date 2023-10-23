@@ -1,5 +1,5 @@
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils"
-import { is, isNot } from "../lib/utils/is"
+import { is, isNot } from "../lib/utils/is.js"
 
 export type Hex = string
 export type Hex32Bytes = string

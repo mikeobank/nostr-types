@@ -1,7 +1,7 @@
-import { NostrEvent } from "./NostrEvent"
-import { Base64, isBase64 } from "./Base64"
+import { NostrEvent } from "./NostrEvent.js"
+import { Base64, isBase64 } from "./Base64.js"
 
-import { isEvent, isEventSync } from "./NostrEvent"
+import { isEvent, isEventSync } from "./NostrEvent.js"
 
 export type NostrEventOTS = NostrEvent & {
   ots: Base64

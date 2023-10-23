@@ -1,12 +1,12 @@
-import type { Filters } from "./Filters"
-import type { RelayURL } from "./RelayURL"
-import WebSocket from "../lib/websocket"
-import { NostrEvent, parseEvent } from "./NostrEvent"
-import { ClientMessage, createClientAuthMessage, createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "./ClientMessage"
-import { SubscriptionId, createSubscriptionId } from "./SubscriptionId"
-import { isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage, RelayEventMessage, RelayNoticeMessage, RelayEOSEMessage, RelayOKMessage, RelayAuthMessage, isRelayAuthMessage, isRelayOKMessage } from "./RelayMessage"
-import { tryParseMessageEventData } from "./WebsocketMessageEvent"
-import { is } from "../lib/utils/is"
+import type { Filters } from "./Filters.js"
+import type { RelayURL } from "./RelayURL.js"
+import WebSocket from "../lib/websocket.js"
+import { NostrEvent, parseEvent } from "./NostrEvent.js"
+import { ClientMessage, createClientAuthMessage, createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "./ClientMessage.js"
+import { SubscriptionId, createSubscriptionId } from "./SubscriptionId.js"
+import { isRelayEventMessage, isRelayNoticeMessage, isRelayEOSEMessage, RelayEventMessage, RelayNoticeMessage, RelayEOSEMessage, RelayOKMessage, RelayAuthMessage, isRelayAuthMessage, isRelayOKMessage } from "./RelayMessage.js"
+import { tryParseMessageEventData } from "./WebsocketMessageEvent.js"
+import { is } from "../lib/utils/is.js"
 
 type Callbacks = {
   onOpen?: (event: Event) => void

@@ -1,4 +1,4 @@
-import { PublicKeyHex } from "./PublicKey"
+import { PublicKeyHex } from "./PublicKey.js"
 
 export type RelayInformationDocument = {
   name?: string

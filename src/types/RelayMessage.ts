@@ -1,9 +1,9 @@
-import { isSubscriptionId, SubscriptionId } from "./SubscriptionId"
-import { isEvent, isEventSync, NostrEvent } from "./NostrEvent"
-import { Id, isId } from "./Id"
-import { isArrayOfSize } from "../lib/utils/isSize"
-import isString from "../lib/utils/isString"
-import isBoolean from "../lib/utils/isBoolean"
+import { isSubscriptionId, SubscriptionId } from "./SubscriptionId.js"
+import { isEvent, isEventSync, NostrEvent } from "./NostrEvent.js"
+import { Id, isId } from "./Id.js"
+import { isArrayOfSize } from "../lib/utils/isSize.js"
+import isString from "../lib/utils/isString.js"
+import isBoolean from "../lib/utils/isBoolean.js"
 
 type ChallengeString = string
 

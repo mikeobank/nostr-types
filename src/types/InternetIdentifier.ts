@@ -1,5 +1,5 @@
-import { isArrayOfSize } from "../lib/utils/isSize"
-import isString from "../lib/utils/isString"
+import { isArrayOfSize } from "../lib/utils/isSize.js"
+import isString from "../lib/utils/isString.js"
 
 type Domain = string
 type LocalPart = string

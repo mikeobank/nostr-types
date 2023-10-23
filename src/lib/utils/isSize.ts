@@ -1,4 +1,4 @@
-import isArray from "./isArray"
+import isArray from "./isArray.js"
 
 export const isSize = <T>(arr: T[], size: number, min = false) : boolean => {
   return min ? arr.length >= size : arr.length === size

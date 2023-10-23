@@ -1,8 +1,8 @@
-import { PrivateKey, createKeyPair } from "./KeyPair"
-import { PublicKeyHex, createPublicKeyHex } from "./PublicKey"
-import { NostrEvent, UnsignedNostrEvent, createEvent } from "./NostrEvent"
-import { encrypt, decrypt } from "./EncryptedDM"
-import isBrowser from "../lib/utils/isBrowser"
+import { PrivateKey, createKeyPair } from "./KeyPair.js"
+import { PublicKeyHex, createPublicKeyHex } from "./PublicKey.js"
+import { NostrEvent, UnsignedNostrEvent, createEvent } from "./NostrEvent.js"
+import { encrypt, decrypt } from "./EncryptedDM.js"
+import isBrowser from "../lib/utils/isBrowser.js"
 
 export const createNostr = (privateKey: PrivateKey) => {
 

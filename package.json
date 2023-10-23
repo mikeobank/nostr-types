@@ -2,12 +2,19 @@
   "name": "nostr-types",
   "version": "0.1.7",
   "description": "Nostr types",
-  "main": "dist/index.js",
+  "type": "module",
+  "exports": {
+    "require": "./cjs/index.js",
+    "import": "./esm/index.js"
+  },
+  "main": "cjs/index.js",
   "scripts": {
     "lint": "npx eslint src",
     "test": "jest",
     "test:watch": "jest --watch",
-    "build": "rm -rf dist && tsc --build",
+    "build:cjs": "tsc --module commonjs --outDir cjs/ && echo '{\"type\": \"commonjs\"}' > cjs/package.json",
+    "build:esm": "tsc --module nodenext --moduleResolution nodenext --outDir esm/ && echo '{\"type\": \"module\"}' > esm/package.json",
+    "build": "npm run build:cjs && npm run build:esm",
     "example:browser": "npx parcel example/index.html",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",

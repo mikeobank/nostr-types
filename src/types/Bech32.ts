@@ -1,11 +1,11 @@
 import { bech32 as baseBech32 } from "@scure/base"
 
-import { Hex, createHexFromUint8Array } from "./Hex"
-import isString from "../lib/utils/isString"
+import { Hex, createHexFromUint8Array } from "./Hex.js"
+import isString from "../lib/utils/isString.js"
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils"
-import { isNot } from "../lib/utils/is"
-import { decode as utf8Decode } from "../lib/utf8encoder"
-import isIn from "../lib/utils/isIn"
+import { isNot } from "../lib/utils/is.js"
+import { decode as utf8Decode } from "../lib/utf8encoder.js"
+import isIn from "../lib/utils/isIn.js"
 
 type Bech32 = string
 const hexPrefixes = ["npub", "nsec", "note"]

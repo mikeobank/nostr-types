@@ -1,6 +1,6 @@
-import isArray from "./isArray"
-import isObject from "./isObject"
-import isString from "./isString"
+import isArray from "./isArray.js"
+import isObject from "./isObject.js"
+import isString from "./isString.js"
 
 export const isEmpty = <T>(value: string | T[] | Record<string, unknown>) : boolean => {
   if (isString(value)) return value === ""

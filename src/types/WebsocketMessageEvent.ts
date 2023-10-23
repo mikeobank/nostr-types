@@ -1,4 +1,4 @@
-import isArray from "../lib/utils/isArray"
+import isArray from "../lib/utils/isArray.js"
 
 export const tryParseMessageEventData = (data: string) : unknown[] | undefined => {
   try {

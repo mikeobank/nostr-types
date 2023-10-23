@@ -1,4 +1,4 @@
-import isString from "../lib/utils/isString"
+import isString from "../lib/utils/isString.js"
 
 export type Content = string
 

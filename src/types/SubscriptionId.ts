@@ -1,9 +1,9 @@
-import type { Filters } from "./Filters"
-import sha256 from "../lib/sha256"
-import isString from "../lib/utils/isString"
-import { is } from "../lib/utils/is"
-import { isNotEmpty } from "../lib/utils/isEmpty"
-import { now } from "./UnixTimestamp"
+import type { Filters } from "./Filters.js"
+import sha256 from "../lib/sha256.js"
+import isString from "../lib/utils/isString.js"
+import { is } from "../lib/utils/is.js"
+import { isNotEmpty } from "../lib/utils/isEmpty.js"
+import { now } from "./UnixTimestamp.js"
 
 export type SubscriptionId = string
 export const isSubscriptionId = (subscriptionId: unknown) : subscriptionId is SubscriptionId => isString(subscriptionId) && isNotEmpty(subscriptionId)

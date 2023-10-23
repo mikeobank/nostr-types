@@ -1,7 +1,7 @@
-import isArray from "../lib/utils/isArray"
-import { isNotEmpty } from "../lib/utils/isEmpty"
-import isIn from "../lib/utils/isIn"
-import isString from "../lib/utils/isString"
+import isArray from "../lib/utils/isArray.js"
+import { isNotEmpty } from "../lib/utils/isEmpty.js"
+import isIn from "../lib/utils/isIn.js"
+import isString from "../lib/utils/isString.js"
 
 export type RelayURL = string
 export type RelayURLs = RelayURL[]

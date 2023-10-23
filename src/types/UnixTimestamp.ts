@@ -1,5 +1,5 @@
-import { isUInt } from "../lib/utils/isNumber"
-import { is } from "../lib/utils/is"
+import { isUInt } from "../lib/utils/isNumber.js"
+import { is } from "../lib/utils/is.js"
 
 export type UnixTimestamp = number // unsigned int, Time in seconds since Unix Epoch
 

@@ -1,7 +1,7 @@
-import isString from "../lib/utils/isString"
-import { isNotEmpty } from "../lib/utils/isEmpty"
-import isBrowser from "../lib/utils/isBrowser"
-import { encode, decode } from "../lib/utf8encoder"
+import isString from "../lib/utils/isString.js"
+import { isNotEmpty } from "../lib/utils/isEmpty.js"
+import isBrowser from "../lib/utils/isBrowser.js"
+import { encode, decode } from "../lib/utf8encoder.js"
 
 export type Base64 = string
 

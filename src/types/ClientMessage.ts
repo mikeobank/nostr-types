@@ -1,7 +1,7 @@
-import { NostrEvent, parseEvent, parseEventSync } from "./NostrEvent"
-import { Filters, isFilters } from "./Filters"
-import { isSubscriptionId, SubscriptionId } from "./SubscriptionId"
-import { isArrayOfSize } from "../lib/utils/isSize"
+import { NostrEvent, parseEvent, parseEventSync } from "./NostrEvent.js"
+import { Filters, isFilters } from "./Filters.js"
+import { isSubscriptionId, SubscriptionId } from "./SubscriptionId.js"
+import { isArrayOfSize } from "../lib/utils/isSize.js"
 
 export type ClientEventMessage = ["EVENT", NostrEvent]
 export type ClientReqMessage = ["REQ", SubscriptionId, Filters]

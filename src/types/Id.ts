@@ -1,13 +1,13 @@
-import type { PublicKeyHex } from "./PublicKey"
-import type { UnixTimestamp } from "./UnixTimestamp"
+import type { PublicKeyHex } from "./PublicKey.js"
+import type { UnixTimestamp } from "./UnixTimestamp.js"
 
-import sha256 from "../lib/sha256"
-import { isHex, isHex32Bytes } from "./Hex"
-import isString from "../lib/utils/isString"
-import { isNotEmpty } from "../lib/utils/isEmpty"
-import { Kind } from "./Kind"
-import { Tags } from "./Tag"
-import { Content } from "./Content"
+import sha256 from "../lib/sha256.js"
+import { isHex, isHex32Bytes } from "./Hex.js"
+import isString from "../lib/utils/isString.js"
+import { isNotEmpty } from "../lib/utils/isEmpty.js"
+import { Kind } from "./Kind.js"
+import { Tags } from "./Tag.js"
+import { Content } from "./Content.js"
 
 export type Id = string // 32 bytes sha-256, lowercase hex encoded
 export type IdPrefix = string // partial Id (from start)

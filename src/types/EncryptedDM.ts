@@ -1,13 +1,13 @@
 import { secp256k1 } from "@noble/curves/secp256k1"
 import { randomBytes } from "@noble/hashes/utils"
 
-import { Base64, isBase64, base64ToBytes, bytesToBase64 } from "./Base64"
-import { Hex, createHexFromUint8Array, createUint8ArrayFromHex } from "./Hex"
-import { NostrEvent, createEvent, isEvent, isEventSync } from "./NostrEvent"
-import type { PrivateKey, PublicKey } from "./KeyPair"
-import { appendTag } from "./Tag"
-import { encode, decode } from "../lib/utf8encoder"
-import subtleCrypto from "../lib/subtleCrypto"
+import { Base64, isBase64, base64ToBytes, bytesToBase64 } from "./Base64.js"
+import { Hex, createHexFromUint8Array, createUint8ArrayFromHex } from "./Hex.js"
+import { NostrEvent, createEvent, isEvent, isEventSync } from "./NostrEvent.js"
+import type { PrivateKey, PublicKey } from "./KeyPair.js"
+import { appendTag } from "./Tag.js"
+import { encode, decode } from "../lib/utf8encoder.js"
+import subtleCrypto from "../lib/subtleCrypto.js"
 
 type EncryptedText = Base64
 type IV = Base64

@@ -1,5 +1,5 @@
-import { UInt, isUInt } from "../lib/utils/isNumber"
-import { isNot } from "../lib/utils/is"
+import { UInt, isUInt } from "../lib/utils/isNumber.js"
+import { isNot } from "../lib/utils/is.js"
 
 export const kinds = {
   0: "set_metadata",
