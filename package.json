@@ -23,7 +23,8 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "postversion": "git push --tags origin main",
-    "publish:patch": "npm run prepare && npm version patch && npm publish"
+    "publish:patch": "npm run prepare && npm version patch && npm publish",
+    "publish:minor": "npm run prepare && npm version minor && npm publish"
   },
   "dependencies": {
     "@noble/curves": "^1.2.0",
