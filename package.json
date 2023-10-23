@@ -2,12 +2,15 @@
   "name": "nostr-types",
   "version": "0.1.7",
   "description": "Nostr types",
+  "author": "Mike O'Bank <mike.obank@pm.me>",
+  "license": "MIT",
   "type": "module",
   "exports": {
     "require": "./cjs/index.js",
     "import": "./esm/index.js"
   },
   "main": "cjs/index.js",
+  "types": "./esm/index.d.ts",
   "scripts": {
     "lint": "npx eslint src",
     "test": "jest",
@@ -21,7 +24,13 @@
     "postversion": "git push --tags origin main",
     "publish:patch": "npm run prepare && npm version patch && npm publish"
   },
-  "author": "Mike O'Bank <mike.obank@pm.me>",
+  "dependencies": {
+    "@noble/curves": "^1.2.0",
+    "@noble/hashes": "^1.3.2",
+    "@scure/bip32": "^1.3.2",
+    "@scure/bip39": "^1.2.1",
+    "websocket": "^1.0.34"
+  },
   "devDependencies": {
     "@types/jest": "^29.5.6",
     "@types/websocket": "^1.0.8",
@@ -34,24 +43,15 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
   },
-  "dependencies": {
-    "@noble/curves": "^1.2.0",
-    "@noble/hashes": "^1.3.2",
-    "@scure/bip32": "^1.3.2",
-    "@scure/bip39": "^1.2.1",
-    "websocket": "^1.0.34"
-  },
-  "types": "./esm/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mikeobank/nostr-types.git"
   },
-  "keywords": [
-    "Nostr"
-  ],
-  "license": "MIT",
+  "homepage": "https://github.com/mikeobank/nostr-types#readme",
   "bugs": {
     "url": "https://github.com/mikeobank/nostr-types/issues"
   },
-  "homepage": "https://github.com/mikeobank/nostr-types#readme"
+  "keywords": [
+    "Nostr"
+  ]
 }
