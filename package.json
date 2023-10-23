@@ -1,6 +1,6 @@
 {
   "name": "nostr-types",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Nostr types",
   "author": "Mike O'Bank <mike.obank@pm.me>",
   "license": "MIT",
