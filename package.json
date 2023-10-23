@@ -11,6 +11,7 @@
   },
   "main": "cjs/index.js",
   "types": "./esm/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "lint": "npx eslint src",
     "test": "jest",
