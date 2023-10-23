@@ -1,4 +1,4 @@
-import { createClient, isRelayURL, isFilters, createUnixTimestamp, createEvent, generateKeyPair, createHexFromUint8Array  } from "../../dist/"
+import { createClient, isRelayURL, isFilters, createUnixTimestamp, createEvent, generateKeyPair, createHexFromUint8Array  } from "../../esm/"
 
 // utils
 const showElem = (elem: HTMLElement, show: boolean) => elem.setAttribute("style", `display: ${ show ? "initial" : "none" }`)

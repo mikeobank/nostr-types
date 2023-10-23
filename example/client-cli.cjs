@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const { createClient, isRelayURL } = require("../dist/")
+const { createClient, isRelayURL } = require("../cjs")
 
 // arguments
 const relayURL = process.argv[2]
 if (isRelayURL(relayURL) === false) {
   console.error("Usage: node client-cli.js [relayURL]")
-  return
+  process.exit()
 }
 
 // open connection to client
