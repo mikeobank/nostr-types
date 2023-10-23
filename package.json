@@ -21,7 +21,7 @@
     "build": "npm run build:cjs && npm run build:esm",
     "example:browser": "npx parcel example/index.html",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
+    "prepublishOnly": "npm run lint && npm test",
     "postversion": "git push --tags origin main",
     "publish:patch": "npm run prepare && npm version patch && npm publish",
     "publish:minor": "npm run prepare && npm version minor && npm publish"
