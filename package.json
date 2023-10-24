@@ -1,6 +1,6 @@
 {
   "name": "nostr-types",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Nostr types",
   "author": "Mike O'Bank <mike.obank@pm.me>",
   "license": "MIT",
@@ -10,7 +10,10 @@
     "import": "./esm/index.js"
   },
   "main": "cjs/index.js",
-  "files": ["cjs", "esm"],
+  "files": [
+    "cjs",
+    "esm"
+  ],
   "types": "./esm/index.d.ts",
   "sideEffects": false,
   "scripts": {
