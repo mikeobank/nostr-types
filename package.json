@@ -10,6 +10,7 @@
     "import": "./esm/index.js"
   },
   "main": "cjs/index.js",
+  "files": ["cjs", "esm"],
   "types": "./esm/index.d.ts",
   "sideEffects": false,
   "scripts": {
