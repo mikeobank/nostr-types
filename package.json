@@ -3,6 +3,7 @@
   "version": "0.2.2",
   "description": "Nostr types",
   "author": "Mike O'Bank <mike.obank@pm.me>",
+  "homepage": "https://github.com/mikeobank/nostr-types#readme",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -53,7 +54,6 @@
     "type": "git",
     "url": "git+https://github.com/mikeobank/nostr-types.git"
   },
-  "homepage": "https://github.com/mikeobank/nostr-types#readme",
   "bugs": {
     "url": "https://github.com/mikeobank/nostr-types/issues"
   },
