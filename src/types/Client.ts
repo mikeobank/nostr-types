@@ -1,6 +1,6 @@
 import type { Filters } from "./Filters.js"
 import type { RelayURL } from "./RelayURL.js"
-import WebSocket from "../lib/websocket.js"
+//import WebSocket from "../lib/websocket.js"
 import { NostrEvent, parseEvent } from "./NostrEvent.js"
 import { ClientMessage, createClientAuthMessage, createClientCloseMessage, createClientEventMessage, createClientReqMessage } from "./ClientMessage.js"
 import { SubscriptionId, createSubscriptionId } from "./SubscriptionId.js"
@@ -64,9 +64,9 @@ const onMessage = async (event: MessageEvent) => {
   }
 }
 
-export const createClient = (url: RelayURL, callbacks: Callbacks = {}, requestOnOpen?: Filters, shouldLog = false) : Client => {
+export const createClient = (WebSocketConstructor: typeof WebSocket) => (url: RelayURL, callbacks: Callbacks = {}, requestOnOpen?: Filters, shouldLog = false) : Client => {
 
-  const webSocket = new WebSocket(url)
+  const webSocket = new WebSocketConstructor(url)
 
   webSocket.onopen = (event: Event) => {
     if (shouldLog) onOpen(event)
