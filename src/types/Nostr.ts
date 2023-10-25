@@ -1,13 +1,14 @@
-import { PrivateKey, createKeyPair } from "./KeyPair.js"
+import { PrivateKey, PublicKey, createKeyPair } from "./KeyPair.js"
 import { RelayURL } from "./RelayURL.js"
 import { PublicKeyHex, createPublicKeyHex } from "./PublicKey.js"
 import { NostrEvent, UnsignedNostrEvent, createEvent } from "./NostrEvent.js"
-import { encrypt, decrypt } from "./EncryptedDM.js"
+import { encrypt, decrypt, EncryptedContent } from "./EncryptedDM.js"
 import isBrowser from "../lib/utils/isBrowser.js"
+import { Content } from "./Content.js"
 
 type Relays = Record<RelayURL, { read: boolean, write: boolean }>
 
-export const createNostr = (privateKey: PrivateKey, relays?: Relays) => {
+export const createNostr = (crypto: SubtleCrypto) => (privateKey: PrivateKey, relays?: Relays) => {
 
   const getPublicKey = () : PublicKeyHex => {
     const { publicKey } = createKeyPair(privateKey)
@@ -24,8 +25,12 @@ export const createNostr = (privateKey: PrivateKey, relays?: Relays) => {
   }
 
   const nip04 = {
-    encrypt: encrypt(privateKey),
-    decrypt: decrypt(privateKey)
+    encrypt: async (publicKey: PublicKey, plaintext: Content) : Promise<EncryptedContent> => {
+      return await encrypt(crypto)(privateKey)(publicKey, plaintext)
+    },
+    decrypt: async (publicKey: PublicKey, ciphertext: EncryptedContent) : Promise<Content> => {
+      return await decrypt(crypto)(privateKey)(publicKey, ciphertext)
+    }
   }
 
   return {
@@ -36,8 +41,8 @@ export const createNostr = (privateKey: PrivateKey, relays?: Relays) => {
   }
 }
 
-export const setNostrOnWindow = (privateKey: PrivateKey, relays?: Relays) => {
+export const setNostrOnWindow = (crypto: SubtleCrypto) => (privateKey: PrivateKey, relays?: Relays) => {
   if (isBrowser === false) return console.warn("Not running in browser environment")
   if ("nostr" in window) console.warn("window.nostr is already existing and will be overridden")
-  ;(window as unknown as Record<"nostr", unknown>).nostr = createNostr(privateKey, relays)
+  ;(window as unknown as Record<"nostr", unknown>).nostr = createNostr(crypto)(privateKey, relays)
 }

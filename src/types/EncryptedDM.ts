@@ -7,11 +7,10 @@ import { NostrEvent, createEvent, isEvent, isEventSync } from "./NostrEvent.js"
 import type { PrivateKey, PublicKey } from "./KeyPair.js"
 import { appendTag } from "./Tag.js"
 import { encode, decode } from "../lib/utf8encoder.js"
-import subtleCrypto from "../lib/subtleCrypto.js"
 
 type EncryptedText = Base64
 type IV = Base64
-type EncryptedContent = `${ EncryptedText }?iv=${ IV }`
+export type EncryptedContent = `${ EncryptedText }?iv=${ IV }`
 type EncryptedDM = Omit<NostrEvent, "kind" | "content"> & {
   kind: 4,
   content: EncryptedContent
@@ -34,19 +33,19 @@ const parseEncryptedContent = (encryptedMessage: EncryptedText) : [EncryptedText
   }
 }
 
-export const encrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, text: string) : Promise<EncryptedContent> => {
+export const encrypt = (crypto: SubtleCrypto) => (privateKey: PrivateKey) => async (publicKey: PublicKey, text: string) : Promise<EncryptedContent> => {
   const sharedSecret = secp256k1.getSharedSecret(privateKey, nonSchnorrPublicKey(publicKey))
   const key = normalizeKey(sharedSecret)
   const iv = randomBytes(16)
   const plainText = encode(text)
-  const cryptoKey = await subtleCrypto.importKey(
+  const cryptoKey = await crypto.importKey(
     format,
     key,
     { name },
     false,
     ["encrypt"]
   )
-  const cipherText = await subtleCrypto.encrypt(
+  const cipherText = await crypto.encrypt(
     { name, iv },
     cryptoKey,
     plainText
@@ -56,11 +55,11 @@ export const encrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, 
   return createEncryptedContent(cipherTextBase64, ivBase64)
 }
 
-export const decrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, encryptedMessage: EncryptedContent) : Promise<string> => {
+export const decrypt = (crypto: SubtleCrypto) => (privateKey: PrivateKey) => async (publicKey: PublicKey, encryptedMessage: EncryptedContent) : Promise<string> => {
   const [cipherTextBase64, ivBase64] = parseEncryptedContent(encryptedMessage)
   const sharedSecret = secp256k1.getSharedSecret(privateKey, nonSchnorrPublicKey(publicKey))
   const key = normalizeKey(sharedSecret)
-  const cryptoKey = await subtleCrypto.importKey(
+  const cryptoKey = await crypto.importKey(
     format,
     key,
     { name },
@@ -69,7 +68,7 @@ export const decrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, 
   )
   const cipherText = base64ToBytes(cipherTextBase64)
   const iv = base64ToBytes(ivBase64)
-  const plainText = await subtleCrypto.decrypt(
+  const plainText = await crypto.decrypt(
     { name, iv },
     cryptoKey,
     cipherText
@@ -77,15 +76,15 @@ export const decrypt = (privateKey: PrivateKey) => async (publicKey: PublicKey, 
   return decode(new Uint8Array(plainText))
 }
 
-export const encryptEvent = (privateKey: PrivateKey) => async (publicKey: PublicKey, event: NostrEvent) : Promise<EncryptedDM> => {
-  const encryptedContent = await encrypt(privateKey)(publicKey, event.content)
+export const encryptEvent = (crypto: SubtleCrypto) => (privateKey: PrivateKey) => async (publicKey: PublicKey, event: NostrEvent) : Promise<EncryptedDM> => {
+  const encryptedContent = await encrypt(crypto)(privateKey)(publicKey, event.content)
   const tags = appendTag(event.tags, ["p", createHexFromUint8Array(publicKey)])
   return await createEvent(privateKey)(4, tags, encryptedContent, event.created_at) as EncryptedDM
 }
 
-export const decryptEvent = (privateKey: PrivateKey) => async (encryptedDM: EncryptedDM) : Promise<NostrEvent> => {
+export const decryptEvent = (crypto: SubtleCrypto) => (privateKey: PrivateKey) => async (encryptedDM: EncryptedDM) : Promise<NostrEvent> => {
   const { id, kind, tags, created_at, pubkey, sig } = encryptedDM
-  const decryptedContent = await decrypt(privateKey)(createUint8ArrayFromHex(pubkey), encryptedDM.content)
+  const decryptedContent = await decrypt(crypto)(privateKey)(createUint8ArrayFromHex(pubkey), encryptedDM.content)
   return {
     id,
     kind,
