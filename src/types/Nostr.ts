@@ -1,10 +1,13 @@
 import { PrivateKey, createKeyPair } from "./KeyPair.js"
+import { RelayURL } from "./RelayURL.js"
 import { PublicKeyHex, createPublicKeyHex } from "./PublicKey.js"
 import { NostrEvent, UnsignedNostrEvent, createEvent } from "./NostrEvent.js"
 import { encrypt, decrypt } from "./EncryptedDM.js"
 import isBrowser from "../lib/utils/isBrowser.js"
 
-export const createNostr = (privateKey: PrivateKey) => {
+type Relays = Record<RelayURL, { read: boolean, write: boolean }>
+
+export const createNostr = (privateKey: PrivateKey, relays?: Relays) => {
 
   const getPublicKey = () : PublicKeyHex => {
     const { publicKey } = createKeyPair(privateKey)
@@ -16,9 +19,8 @@ export const createNostr = (privateKey: PrivateKey) => {
     return await createEvent(privateKey)(kind, tags, content, created_at)
   }
 
-  const getRelays = () => {
-    console.warn("`getRelays()` is not implemented")
-    return {}
+  const getRelays = () : Relays => {
+    return relays ?? {}
   }
 
   const nip04 = {
@@ -34,8 +36,8 @@ export const createNostr = (privateKey: PrivateKey) => {
   }
 }
 
-export const setNostrOnWindow = (privateKey: PrivateKey) => {
+export const setNostrOnWindow = (privateKey: PrivateKey, relays?: Relays) => {
   if (isBrowser === false) return console.warn("Not running in browser environment")
   if ("nostr" in window) console.warn("window.nostr is already existing and will be overridden")
-  ;(window as unknown as Record<"nostr", unknown>).nostr = createNostr(privateKey)
+  ;(window as unknown as Record<"nostr", unknown>).nostr = createNostr(privateKey, relays)
 }
