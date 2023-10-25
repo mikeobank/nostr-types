@@ -89,7 +89,7 @@ form?.addEventListener("submit", event => {
   const parsedFilters = parseFilters()
   const filters = Object.keys(parsedFilters).length > 0 ? parsedFilters : undefined
   if (hasRelay(url) !== undefined) {
-    relays[url] = createClient(url, undefined, filters, true)
+    relays[url] = createClient(WebSocket)(url, undefined, filters, true)
   } else if (filters !== undefined) {
     getRelay(url).sendReq(filters)
   }
