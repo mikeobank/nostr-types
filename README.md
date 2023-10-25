@@ -1,5 +1,5 @@
 # Nostr
-Nostr types. Factory, validation, and parsing functions in Typescript.
+Nostr Types. Pure, environment agnostic (injectable) factory, validation, and parsing functions in Typescript.
 - https://github.com/nostr-protocol/nips
 
 ## Nips & Types
