@@ -3,7 +3,6 @@ import { RelayURL } from "./RelayURL.js"
 import { PublicKeyHex, createPublicKeyHex } from "./PublicKey.js"
 import { NostrEvent, UnsignedNostrEvent, createEvent } from "./NostrEvent.js"
 import { encrypt, decrypt, EncryptedContent } from "./EncryptedDM.js"
-import isBrowser from "../lib/utils/isBrowser.js"
 import { Content } from "./Content.js"
 
 type Relays = Record<RelayURL, { read: boolean, write: boolean }>
@@ -42,7 +41,7 @@ export const createNostr = (crypto: SubtleCrypto) => (privateKey: PrivateKey, re
 }
 
 export const setNostrOnWindow = (crypto: SubtleCrypto) => (privateKey: PrivateKey, relays?: Relays) => {
-  if (isBrowser === false) return console.warn("Not running in browser environment")
+  if (typeof window === "undefined") return console.warn("`window` is not defined. Probably not running in browser environment")
   if ("nostr" in window) console.warn("window.nostr is already existing and will be overridden")
   ;(window as unknown as Record<"nostr", unknown>).nostr = createNostr(crypto)(privateKey, relays)
 }

@@ -1,6 +1,5 @@
 import isString from "../lib/utils/isString.js"
 import { isNotEmpty } from "../lib/utils/isEmpty.js"
-import isBrowser from "../lib/utils/isBrowser.js"
 import { encode, decode } from "../lib/utf8encoder.js"
 
 export type Base64 = string
@@ -18,9 +17,9 @@ export const isBase64 = (base64: unknown) : base64 is Base64 => {
 }
 
 export const bytesToBase64 = (arr: Uint8Array) : Base64 => {
-  return isBrowser ? btoa(decode(arr)) : Buffer.from(arr).toString("base64")
+  return typeof Buffer !== "undefined" ? Buffer.from(arr).toString("base64") : btoa(decode(arr))
 }
 
 export const base64ToBytes = (base64: Base64) : Uint8Array => {
-  return isBrowser ? encode(atob(base64)) : Buffer.from(base64, "base64")
+  return typeof Buffer !== "undefined" ? Buffer.from(base64, "base64") : encode(atob(base64))
 }
