@@ -1,9 +1,10 @@
-import { PrivateKey, PublicKey, createKeyPair } from "./KeyPair.js"
-import { RelayURL } from "./RelayURL.js"
-import { PublicKeyHex, createPublicKeyHex } from "./PublicKey.js"
-import { NostrEvent, UnsignedNostrEvent, createEvent } from "./NostrEvent.js"
-import { encrypt, decrypt, EncryptedContent } from "./EncryptedDM.js"
-import { Content } from "./Content.js"
+import { type PrivateKey } from "./PrivateKey.js"
+import { type PublicKey, PublicKeyHex, createPublicKeyHex } from "./PublicKey.js"
+import { createKeyPair } from "./KeyPair.js"
+import { type RelayURL } from "./RelayURL.js"
+import { type NostrEvent, type UnsignedNostrEvent, createEvent } from "./NostrEvent.js"
+import { encrypt, decrypt, type EncryptedContent } from "./EncryptedDM.js"
+import { type Content } from "./Content.js"
 
 type Relays = Record<RelayURL, { read: boolean, write: boolean }>
 

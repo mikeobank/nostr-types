@@ -1,9 +1,8 @@
-import type { PublicKey } from "./KeyPair.js"
-
 import { createHexFromUint8Array, isHex, isHex32Bytes } from "./Hex.js"
 import isString from "../lib/utils/isString.js"
 import { isNotEmpty } from "../lib/utils/isEmpty.js"
 
+export type PublicKey = Uint8Array
 export type PublicKeyHex = string
 export type PublicKeyHexPrefix = string
 

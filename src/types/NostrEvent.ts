@@ -4,7 +4,9 @@ import { Id, isId, createId } from "./Id.js"
 import { PublicKeyHex, isPublicKeyHex, createPublicKeyHex } from "./PublicKey.js"
 import { UnixTimestamp, isUnixTimestamp, now } from "./UnixTimestamp.js"
 import { SignatureHex, isSignature, createSignature, createSignatureSync, verifySignature, verifySignatureSync } from "./Signature.js"
-import { PublicKey, PrivateKey, createKeyPair } from "./KeyPair.js"
+import { type PublicKey } from "./PublicKey.js"
+import { PrivateKeyHex, type PrivateKey } from "./PrivateKey.js"
+import { createKeyPair } from "./KeyPair.js"
 import { Content, isContent } from "./Content.js"
 import toArray from "../lib/utils/toArray.js"
 import isObject from "../lib/utils/isObject.js"
@@ -35,8 +37,8 @@ const createUnsignedEvent = (kindOrName: KindOrName, tags: Tags, content: Conten
   }
 }
 
-export const createEvent = (privateKey: PrivateKey) => async (kindOrName: KindOrName, tags: Tags = [], content: Content = "", created_at: UnixTimestamp = now()) : Promise<NostrEvent> => {
-  const { publicKey } = createKeyPair(privateKey)
+export const createEvent = (privateKeyOrHex: PrivateKey | PrivateKeyHex) => async (kindOrName: KindOrName, tags: Tags = [], content: Content = "", created_at: UnixTimestamp = now()) : Promise<NostrEvent> => {
+  const { publicKey, privateKey } = createKeyPair(privateKeyOrHex)
   const unsignedEvent = createUnsignedEvent(kindOrName, tags, content, created_at, publicKey)
   const { id } = unsignedEvent
   const sig = await createSignature(privateKey)(id)
@@ -46,8 +48,8 @@ export const createEvent = (privateKey: PrivateKey) => async (kindOrName: KindOr
   }
 }
 
-export const createEventSync = (privateKey: PrivateKey) => (kindOrName: Kind | string, tags: Tags = [], content: Content = "", created_at: UnixTimestamp = now()) : NostrEvent => {
-  const { publicKey } = createKeyPair(privateKey)
+export const createEventSync = (privateKeyOrHex: PrivateKey | PrivateKeyHex) => (kindOrName: Kind | string, tags: Tags = [], content: Content = "", created_at: UnixTimestamp = now()) : NostrEvent => {
+  const { publicKey, privateKey } = createKeyPair(privateKeyOrHex)
   const unsignedEvent = createUnsignedEvent(kindOrName, tags, content, created_at, publicKey)
   const { id } = unsignedEvent
   const sig = createSignatureSync(privateKey)(id)

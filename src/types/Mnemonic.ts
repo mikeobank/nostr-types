@@ -24,7 +24,7 @@ import { HDKey } from "@scure/bip32"
 //import BIP32Factory from "bip32"
 //import * as ecc from "tiny-secp256k1"
 
-import { PrivateKey } from "./KeyPair.js"
+import { PrivateKey } from "./PrivateKey.js"
 import { isUInt } from "../lib/utils/isNumber.js"
 import { isArrayOfSize } from "../lib/utils/isSize.js"
 import isString from "../lib/utils/isString.js"

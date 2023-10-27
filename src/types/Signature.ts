@@ -1,6 +1,8 @@
 import { schnorr } from "@noble/curves/secp256k1"
 
-import { createKeyPair, PrivateKey, PublicKey } from "./KeyPair.js"
+import type { PrivateKey } from "./PrivateKey.js"
+import type { PublicKey } from "./PublicKey.js"
+import { createKeyPair } from "./KeyPair.js"
 import type { Id } from "./Id.js"
 import { createHexFromUint8Array, createUint8ArrayFromHex, isHex64Bytes } from "./Hex.js"
 import { PublicKeyHex } from "./PublicKey.js"

@@ -1,4 +1,4 @@
-import { createKeyPair, generateKeyPair, generatePrivateKey } from "../../src/types/KeyPair"
+import { createKeyPair, generateKeyPair } from "../../src/types/KeyPair"
 import privateKey from "../privateKey"
 
 test("createKeyPair", () => {
@@ -9,9 +9,4 @@ test("createKeyPair", () => {
 test("generateKeyPair", () => {
   const { privateKey: privateKey2 } = generateKeyPair()
   expect(privateKey2).not.toEqual(privateKey)
-})
-
-test("generatePrivateKey", () => {
-  const privateKey1 = generatePrivateKey()
-  expect(privateKey1).not.toEqual(privateKey)
 })
