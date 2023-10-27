@@ -1,9 +1,9 @@
-import { createHexFromUint8Array, isHex, isHex32Bytes } from "./Hex.js"
+import { Hex32Bytes, createHexFromUint8Array, isHex, isHex32Bytes } from "./Hex.js"
 import isString from "../lib/utils/isString.js"
 import { isNotEmpty } from "../lib/utils/isEmpty.js"
 
 export type PublicKey = Uint8Array
-export type PublicKeyHex = string
+export type PublicKeyHex = Hex32Bytes
 export type PublicKeyHexPrefix = string
 
 export const createPublicKeyHex = (publicKey: PublicKey) => createHexFromUint8Array(publicKey)

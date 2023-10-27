@@ -1,9 +1,9 @@
 import { schnorr } from "@noble/curves/secp256k1"
-import { createHexFromUint8Array, createUint8ArrayFromHex, isHex32Bytes } from "./Hex.js"
+import { Hex32Bytes, createHexFromUint8Array, createUint8ArrayFromHex, isHex32Bytes } from "./Hex.js"
 import isString from "../lib/utils/isString.js"
 
 export type PrivateKey = Uint8Array
-export type PrivateKeyHex = string
+export type PrivateKeyHex = Hex32Bytes
 
 export const isPrivateKeyHex = (privateKeyHex: unknown) : privateKeyHex is PrivateKeyHex => {
   return isString(privateKeyHex) && isHex32Bytes(privateKeyHex)
