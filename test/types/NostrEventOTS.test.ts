@@ -1,4 +1,4 @@
-import { NostrEventOTS, isEventOTS, isEventOTSSync } from "../../src/types/NostrEventOTS"
+import { isEventOTS, isEventOTSSync } from "../../src/types/NostrEventOTS"
 import { createEvent } from "../../src/types/NostrEvent"
 import privateKey from "../privateKey"
 

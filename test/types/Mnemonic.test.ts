@@ -1,7 +1,7 @@
 import { bytesToBech32 } from "../../src/types/Bech32"
 import { createHexFromUint8Array } from "../../src/types/Hex"
 import { createKeyPair } from "../../src/types/KeyPair"
-import { isAccount, isMnemonicWord, isMnemonic, generateMnemonic, createDerivationPath, getPrivateKeyFromMnenomic, mnemonicToString, createMnemonic } from "../../src/types/Mnemonic"
+import { isAccount, isMnemonicWord, isMnemonic, generateMnemonic, createDerivationPath, getPrivateKeyFromMnenomic, createMnemonic } from "../../src/types/Mnemonic"
 
 test("isAccount", () => {
   expect(isAccount(-1)).toBeFalsy()

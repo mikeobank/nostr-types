@@ -18,7 +18,7 @@
   "types": "./esm/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "lint": "npx eslint src",
+    "lint": "eslint src test",
     "test": "jest",
     "test:watch": "jest --watch",
     "build:cjs": "rm -rf cjs && tsc --module commonjs --moduleResolution node10 --outDir cjs && echo '{ \"type\": \"commonjs\" }' > cjs/package.json",
