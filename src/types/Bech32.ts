@@ -8,9 +8,9 @@ import { decode as utf8Decode } from "../lib/utf8encoder.js"
 import isIn from "../lib/utils/isIn.js"
 
 type Bech32 = string
-type Npub = Bech32
-type Nsec = Bech32
-type Note = Bech32
+export type Npub = Bech32
+export type Nsec = Bech32
+export type Note = Bech32
 const hexPrefixes = ["npub", "nsec", "note"]
 type HexPrefix = typeof hexPrefixes[number]
 const tlvPrefixes = ["nprofile", "nevent", "nrelay"]
