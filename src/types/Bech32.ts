@@ -31,12 +31,15 @@ export const isBech32 = (bech32: unknown) : bech32 is Bech32 => {
   return false
 }
 
+// @TODO: Do not decode twice
 export const isNpub = (npub: unknown) : npub is Npub => {
   return isBech32(npub) && isBech32Prefix(npub, "npub")
 }
+// @TODO: Do not decode twice
 export const isNsec = (nsec: unknown) : nsec is Nsec => {
   return isBech32(nsec) && isBech32Prefix(nsec, "nsec")
 }
+// @TODO: Do not decode twice
 export const isNote = (note: unknown) : note is Note => {
   return isBech32(note) && isBech32Prefix(note, "note")
 }
