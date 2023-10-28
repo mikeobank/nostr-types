@@ -8,6 +8,9 @@ import { decode as utf8Decode } from "../lib/utf8encoder.js"
 import isIn from "../lib/utils/isIn.js"
 
 type Bech32 = string
+type Npub = Bech32
+type Nsec = Bech32
+type Note = Bech32
 const hexPrefixes = ["npub", "nsec", "note"]
 type HexPrefix = typeof hexPrefixes[number]
 const tlvPrefixes = ["nprofile", "nevent", "nrelay"]
@@ -26,6 +29,16 @@ export const isBech32 = (bech32: unknown) : bech32 is Bech32 => {
     }
   }
   return false
+}
+
+export const isNpub = (npub: unknown) : npub is Npub => {
+  return isBech32(npub) && isBech32Prefix(npub, "npub")
+}
+export const isNsec = (nsec: unknown) : nsec is Nsec => {
+  return isBech32(nsec) && isBech32Prefix(nsec, "nsec")
+}
+export const isNote = (note: unknown) : note is Note => {
+  return isBech32(note) && isBech32Prefix(note, "note")
 }
 
 export const bech32Prefix = (bech32: Bech32) : string => {

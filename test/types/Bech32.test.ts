@@ -1,9 +1,25 @@
-import { isBech32, bech32ToHex, bech32Prefix, isBech32Prefix, hexToBech32, decode } from "../../src/types/Bech32"
+import { isBech32, bech32ToHex, bech32Prefix, isBech32Prefix, hexToBech32, decode, isNpub, isNsec, bytesToBech32, isNote } from "../../src/types/Bech32"
+import { createUint8ArrayFromHex } from "../../src/types/Hex"
 
 test("isBech32", () => {
   expect(isBech32("")).toBeFalsy()
   expect(isBech32("1f")).toBeFalsy()
   expect(isBech32("npub180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsyjh6w6")).toBeTruthy()
+})
+
+test("isNpub", () => {
+  expect(isNpub("nsec1vl029mgpspedva04g90vltkh6fvh240zqtv9k0t9af8935ke9laqsnlfe5")).toBeFalsy()
+  expect(isNpub("npub10elfcs4fr0l0r8af98jlmgdh9c8tcxjvz9qkw038js35mp4dma8qzvjptg")).toBeTruthy()
+})
+
+test("isNsec", () => {
+  expect(isNsec("npub10elfcs4fr0l0r8af98jlmgdh9c8tcxjvz9qkw038js35mp4dma8qzvjptg")).toBeFalsy()
+  expect(isNsec("nsec1vl029mgpspedva04g90vltkh6fvh240zqtv9k0t9af8935ke9laqsnlfe5")).toBeTruthy()
+})
+
+test("isNote", () => {
+  expect(isNote("npub180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkws4c58hj")).toBeFalsy()
+  expect(isNote("note180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkws4c58hj")).toBeTruthy()
 })
 
 test("bech32Prefix", () => {
