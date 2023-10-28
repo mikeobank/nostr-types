@@ -6,6 +6,8 @@ import { bytesToHex, hexToBytes } from "@noble/hashes/utils"
 import { isNot } from "../lib/utils/is.js"
 import { decode as utf8Decode } from "../lib/utf8encoder.js"
 import isIn from "../lib/utils/isIn.js"
+import { PublicKey, PublicKeyHex, isPublicKeyHex } from "./PublicKey.js"
+import { PrivateKey, PrivateKeyHex, isPrivateKeyHex } from "./PrivateKey.js"
 
 type Bech32 = string
 export type Npub = Bech32
@@ -79,6 +81,16 @@ export const bech32ToHex = (bech32: Bech32) : Hex => {
 export const hexToBech32 = (hex: Hex, prefix: Prefix) : Bech32 => {
   const bytes = hexToBytes(hex)
   return bytesToBech32(bytes, prefix)
+}
+
+export const createNpub = (publicKeyOrHex: PublicKey | PublicKeyHex) : Npub => {
+  const prefix = "npub"
+  return isPublicKeyHex(publicKeyOrHex) ? hexToBech32(publicKeyOrHex, prefix) : bytesToBech32(publicKeyOrHex, prefix)
+}
+
+export const createNsec = (privateKeyOrHex: PrivateKey | PrivateKeyHex) : Nsec => {
+  const prefix = "nsec"
+  return isPrivateKeyHex(privateKeyOrHex) ? hexToBech32(privateKeyOrHex, prefix) : bytesToBech32(privateKeyOrHex, prefix)
 }
 
 const splitFirstTLV = (bytes: Uint8Array) : [TLV, Uint8Array] => {

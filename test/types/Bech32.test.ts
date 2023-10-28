@@ -1,5 +1,5 @@
-import { isBech32, bech32ToHex, bech32Prefix, isBech32Prefix, hexToBech32, decode, isNpub, isNsec, bytesToBech32, isNote } from "../../src/types/Bech32"
-import { createUint8ArrayFromHex } from "../../src/types/Hex"
+import { hexToBytes } from "@noble/hashes/utils"
+import { isBech32, bech32ToHex, bech32Prefix, isBech32Prefix, hexToBech32, decode, isNpub, isNsec, isNote, createNpub, createNsec } from "../../src/types/Bech32"
 
 test("isBech32", () => {
   expect(isBech32("")).toBeFalsy()
@@ -51,4 +51,14 @@ test("decode", () => {
     prefix: "nprofile",
     value: ["3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d", "wss://r.x.com", "wss://djbas.sadkb.com"]
   })
+})
+
+test("createNpub", () => {
+  expect(createNpub("3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d")).toBe("npub180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsyjh6w6")
+  expect(createNpub(hexToBytes("3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d"))).toBe("npub180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsyjh6w6")
+})
+
+test("createNsec", () => {
+    expect(createNsec("3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d")).toBe("nsec180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsgyumg0")
+    expect(createNsec(hexToBytes("3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d"))).toBe("nsec180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsgyumg0")
 })
