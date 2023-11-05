@@ -1,9 +1,10 @@
-import { isUInt } from "../lib/utils/isNumber.js"
+import { UInt, isUInt } from "../lib/utils/isNumber.js"
 import { is } from "../lib/utils/is.js"
 
 export type UnixTimestamp = number // unsigned int, Time in seconds since Unix Epoch
 
 export const millisecondsToSeconds = (ms: number) : UnixTimestamp => Math.floor(ms / 1000)
+export const secondsToMilliseconds = (s: UnixTimestamp) : UInt => s * 1000
 
 export const isUnixTimestamp = (unixTimestamp: unknown, shouldWarn = false) : unixTimestamp is UnixTimestamp => {
   if (isUInt(unixTimestamp)) {
@@ -17,6 +18,10 @@ export const createUnixTimestamp = (date: string) : UnixTimestamp | undefined =>
   const n = Date.parse(date)
   if (Number.isNaN(n)) return
   return millisecondsToSeconds(n)
+}
+
+export const unixTimestampToDate = (unixTimestamp: UnixTimestamp) : Date => {
+  return new Date(secondsToMilliseconds(unixTimestamp))
 }
 
 export const now = () : UnixTimestamp => millisecondsToSeconds(Date.now())

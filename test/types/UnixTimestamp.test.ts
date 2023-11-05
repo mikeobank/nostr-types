@@ -1,9 +1,17 @@
-import { createUnixTimestamp, now, isInBetween } from "../../src/types/UnixTimestamp"
+import { createUnixTimestamp, now, isInBetween, millisecondsToSeconds, secondsToMilliseconds, unixTimestampToDate } from "../../src/types/UnixTimestamp"
+
+test("seconds <=> milliseconds", () => {
+  expect(millisecondsToSeconds(secondsToMilliseconds(1673726256))).toBe(1673726256)
+})
 
 test("createUnixTimestamp", () => {
   expect(createUnixTimestamp("")).toBeUndefined()
   expect(createUnixTimestamp("1673726256")).toBeUndefined()
   expect(createUnixTimestamp("2023-01-14")).not.toBeUndefined()
+})
+
+test("unixTimestampToDate", () => {
+  expect(unixTimestampToDate(1673726256)).toBeInstanceOf(Date)
 })
 
 test("now", () => {
