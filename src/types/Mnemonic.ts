@@ -36,6 +36,7 @@ export type Mnemonic =
   [MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord] |
   [MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord,
    MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord]
+export type MnemonicLength = 12 | 24
 export type Language = keyof typeof wordlists
 export const defaultLanguage: Language = "english"
 export type Passphrase = string
@@ -67,7 +68,7 @@ export const createMnemonic = (str: string, language: Language = defaultLanguage
   return mnemonic as Mnemonic
 }
 
-export const generateMnemonic = (length: 12 | 24 = 12, language: Language = defaultLanguage) : Mnemonic => {
+export const generateMnemonic = (length: MnemonicLength = 12, language: Language = defaultLanguage) : Mnemonic => {
   const strength = length === 24 ? 256 : 128
   const wordlist = wordlists[language]
   return createMnemonic(bip39GenerateMnemonic(wordlist, strength), language)
