@@ -2,6 +2,7 @@ import { bytesToBech32 } from "../../src/types/Bech32"
 import { createHexFromUint8Array } from "../../src/types/Hex"
 import { createKeyPair } from "../../src/types/KeyPair"
 import { isAccount, isMnemonicWord, isMnemonic, generateMnemonic, createDerivationPath, getPrivateKeyFromMnenomic, createMnemonic } from "../../src/types/Mnemonic"
+import { wordlistEnglish, wordlistSpanish, wordlistChineseSimplified, wordlistChineseTraditional } from "../../src/types/MnemonicWordlist"
 
 test("isAccount", () => {
   expect(isAccount(-1)).toBeFalsy()
@@ -11,22 +12,22 @@ test("isAccount", () => {
 })
 
 test("isMnemonicWord", () => {
-  expect(isMnemonicWord("not")).toBeFalsy()
-  expect(isMnemonicWord("satoshi")).toBeTruthy()
-  expect(isMnemonicWord("absurd")).toBeTruthy()
-  expect(isMnemonicWord("absurd", "spanish")).toBeFalsy()
-  expect(isMnemonicWord("ábaco", "spanish")).toBeTruthy()
-  expect(isMnemonicWord("中", "chinese_simplified")).toBeTruthy()
-  expect(isMnemonicWord("中", "chinese_traditional")).toBeTruthy()
+  expect(isMnemonicWord("not", wordlistEnglish)).toBeFalsy()
+  expect(isMnemonicWord("satoshi", wordlistEnglish)).toBeTruthy()
+  expect(isMnemonicWord("absurd", wordlistEnglish)).toBeTruthy()
+  expect(isMnemonicWord("absurd", wordlistSpanish)).toBeFalsy()
+  expect(isMnemonicWord("ábaco", wordlistSpanish)).toBeTruthy()
+  expect(isMnemonicWord("中", wordlistChineseSimplified)).toBeTruthy()
+  expect(isMnemonicWord("中", wordlistChineseTraditional)).toBeTruthy()
 })
 
 test("isMnemonic", () => {
-  expect(isMnemonic([])).toBeFalsy()
-  expect(isMnemonic(["satoshi"])).toBeFalsy()
-  expect(isMnemonic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"])).toBeTruthy()
-  expect(isMnemonic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "absurd"])).toBeFalsy()
-  expect(isMnemonic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon","art"])).toBeTruthy()
-  expect(isMnemonic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon","absurd"])).toBeFalsy()
+  expect(isMnemonic([], wordlistEnglish)).toBeFalsy()
+  expect(isMnemonic(["satoshi"], wordlistEnglish)).toBeFalsy()
+  expect(isMnemonic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"], wordlistEnglish)).toBeTruthy()
+  expect(isMnemonic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "absurd"], wordlistEnglish)).toBeFalsy()
+  expect(isMnemonic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon","art"], wordlistEnglish)).toBeTruthy()
+  expect(isMnemonic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon","absurd"], wordlistEnglish)).toBeFalsy()
 })
 
 test("createDerivationPath", () => {
@@ -36,30 +37,30 @@ test("createDerivationPath", () => {
 })
 
 test("generateMnemonic", () => {
-  expect(generateMnemonic()).toHaveLength(12)
-  expect(generateMnemonic(24)).toHaveLength(24)
-  expect(generateMnemonic().every(word => isMnemonicWord(word, "english"))).toBeTruthy()
-  expect(generateMnemonic(undefined, "spanish").every(word => isMnemonicWord(word, "spanish"))).toBeTruthy()
+  expect(generateMnemonic(wordlistEnglish)).toHaveLength(12)
+  expect(generateMnemonic(wordlistEnglish, 24)).toHaveLength(24)
+  expect(generateMnemonic(wordlistEnglish).every(word => isMnemonicWord(word, wordlistEnglish))).toBeTruthy()
+  expect(generateMnemonic(wordlistSpanish).every(word => isMnemonicWord(word, wordlistSpanish))).toBeTruthy()
 })
 
 test("getPrivateKeyFromMnenomic", async () => {
-  expect(async () => await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"])).not.toThrow()
-  expect(async () => await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "absurd"])).rejects.toThrow()
+  expect(async () => await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"], wordlistEnglish)).not.toThrow()
+  expect(async () => await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "absurd"], wordlistEnglish)).rejects.toThrow()
   expect(
-    await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"])
+    await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"], wordlistEnglish)
   ).not.toEqual(
-    await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"], undefined, "pass phrase")
+    await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"], wordlistEnglish, "pass phrase")
   )
   expect(
-    await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"])
+    await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"], wordlistEnglish)
   ).not.toEqual(
-    await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"], undefined, undefined, 3)
+    await getPrivateKeyFromMnenomic(["abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "abandon", "about"], wordlistEnglish, undefined, 3)
   )
 })
 
 test("test vectors 12", async () => {
-  const mnemonic = createMnemonic("leader monkey parrot ring guide accident before fence cannon height naive bean")
-  const privateKey = await getPrivateKeyFromMnenomic(mnemonic)
+  const mnemonic = createMnemonic("leader monkey parrot ring guide accident before fence cannon height naive bean", wordlistEnglish)
+  const privateKey = await getPrivateKeyFromMnenomic(mnemonic, wordlistEnglish)
   expect(createHexFromUint8Array(privateKey)).toBe("7f7ff03d123792d6ac594bfa67bf6d0c0ab55b6b1fdb6249303fe861f1ccba9a")
   expect(bytesToBech32(privateKey, "nsec")).toBe("nsec10allq0gjx7fddtzef0ax00mdps9t2kmtrldkyjfs8l5xruwvh2dq0lhhkp")
   const { publicKey } = createKeyPair(privateKey)
@@ -68,8 +69,8 @@ test("test vectors 12", async () => {
 })
 
 test("test vectors 24", async () => {
-  const mnemonic = createMnemonic("what bleak badge arrange retreat wolf trade produce cricket blur garlic valid proud rude strong choose busy staff weather area salt hollow arm fade")
-  const privateKey = await getPrivateKeyFromMnenomic(mnemonic)
+  const mnemonic = createMnemonic("what bleak badge arrange retreat wolf trade produce cricket blur garlic valid proud rude strong choose busy staff weather area salt hollow arm fade", wordlistEnglish)
+  const privateKey = await getPrivateKeyFromMnenomic(mnemonic, wordlistEnglish)
   expect(createHexFromUint8Array(privateKey)).toBe("c15d739894c81a2fcfd3a2df85a0d2c0dbc47a280d092799f144d73d7ae78add")
   expect(bytesToBech32(privateKey, "nsec")).toBe("nsec1c9wh8xy5eqdzln7n5t0ctgxjcrdug73gp5yj0x03gntn67h83twssdfhel")
   const { publicKey } = createKeyPair(privateKey)

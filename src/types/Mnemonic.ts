@@ -1,26 +1,6 @@
 import { validateMnemonic, generateMnemonic as bip39GenerateMnemonic, mnemonicToSeed } from "@scure/bip39"
-import { wordlist as chinese_simplified } from "@scure/bip39/wordlists/simplified-chinese"
-import { wordlist as chinese_traditional } from "@scure/bip39/wordlists/traditional-chinese"
-import { wordlist as czech } from "@scure/bip39/wordlists/czech"
-import { wordlist as english } from "@scure/bip39/wordlists/english"
-import { wordlist as french } from "@scure/bip39/wordlists/french"
-import { wordlist as italian } from "@scure/bip39/wordlists/italian"
-import { wordlist as japanese } from "@scure/bip39/wordlists/japanese"
-import { wordlist as korean } from "@scure/bip39/wordlists/korean"
-import { wordlist as spanish } from "@scure/bip39/wordlists/spanish"
-const wordlists = {
-  chinese_simplified,
-  chinese_traditional,
-  czech,
-  english,
-  french,
-  italian,
-  japanese,
-  korean,
-  spanish
-}
 import { HDKey } from "@scure/bip32"
-
+import { Wordlist } from "./MnemonicWordlist.js"
 import { PrivateKey } from "./PrivateKey.js"
 import { isUInt } from "../lib/utils/isNumber.js"
 import { isArrayOfSize } from "../lib/utils/isSize.js"
@@ -34,41 +14,38 @@ export type Mnemonic =
   [MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord,
    MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord]
 export type MnemonicLength = 12 | 24
-export type Language = keyof typeof wordlists
-export const defaultLanguage: Language = "english"
 export type Passphrase = string
 
 export type Account = number
 export type DerivationPath = `m/44'/1237'/${ Account }'/0/0`
 
-export const isMnemonicWord = (word: unknown, language: Language = defaultLanguage) : word is MnemonicWord => {
-  return isString(word) && isIn(wordlists[language], word)
+export const isMnemonicWord = (word: unknown, wordlist: Wordlist) : word is MnemonicWord => {
+  return isString(word) && isIn(wordlist, word)
 }
 
-export const areMnemonicWords = (words: Array<unknown>, language: Language = defaultLanguage) : words is Array<MnemonicWord> => {
-  return words.every(word => isMnemonicWord(word, language))
+export const areMnemonicWords = (words: Array<unknown>, wordlist: Wordlist) : words is Array<MnemonicWord> => {
+  return words.every(word => isMnemonicWord(word, wordlist))
 }
 
 export const mnemonicToString = (mnemonic: Mnemonic) : string => {
   return mnemonic.join(" ")
 }
 
-export const isMnemonic = (mnemonic: unknown, language: Language = defaultLanguage) : mnemonic is Mnemonic => {
+export const isMnemonic = (mnemonic: unknown, wordlist: Wordlist) : mnemonic is Mnemonic => {
   return (isArrayOfSize(mnemonic, 12) || isArrayOfSize(mnemonic, 24)) &&
-    areMnemonicWords(mnemonic, language) &&
-    validateMnemonic(mnemonicToString(mnemonic as Mnemonic), wordlists[language])
+    areMnemonicWords(mnemonic, wordlist) &&
+    validateMnemonic(mnemonicToString(mnemonic as Mnemonic), wordlist)
 }
 
-export const createMnemonic = (str: string, language: Language = defaultLanguage) : Mnemonic => {
+export const createMnemonic = (str: string, wordlist: Wordlist) : Mnemonic => {
   const mnemonic = str.split(" ")
-  if (isMnemonic(mnemonic, language) === false) throw new Error("Invalid mnemonic string")
+  if (isMnemonic(mnemonic, wordlist) === false) throw new Error("Invalid mnemonic string")
   return mnemonic as Mnemonic
 }
 
-export const generateMnemonic = (length: MnemonicLength = 12, language: Language = defaultLanguage) : Mnemonic => {
+export const generateMnemonic = (wordlist: Wordlist, length: MnemonicLength = 12) : Mnemonic => {
   const strength = length === 24 ? 256 : 128
-  const wordlist = wordlists[language]
-  return createMnemonic(bip39GenerateMnemonic(wordlist, strength), language)
+  return createMnemonic(bip39GenerateMnemonic(wordlist, strength), wordlist)
 }
 
 export const isPassphrase = (passphrase: unknown) : passphrase is Passphrase => {
@@ -84,8 +61,8 @@ export const createDerivationPath = (account: Account = 0) : DerivationPath => {
   return `m/44'/1237'/${ account }'/0/0`
 }
 
-export const getPrivateKeyFromMnenomic = async (mnemonic: Mnemonic, language: Language = defaultLanguage, passphrase?: Passphrase, account: Account = 0) : Promise<PrivateKey> => {
-  if (isMnemonic(mnemonic, language) === false) throw new Error("Invalid mnemonic")
+export const getPrivateKeyFromMnenomic = async (mnemonic: Mnemonic, wordlist: Wordlist, passphrase?: Passphrase, account: Account = 0) : Promise<PrivateKey> => {
+  if (isMnemonic(mnemonic, wordlist) === false) throw new Error("Invalid mnemonic")
   const seed = await mnemonicToSeed(mnemonicToString(mnemonic), passphrase)
   const hdkey = HDKey.fromMasterSeed(seed)
   const path = createDerivationPath(account)
