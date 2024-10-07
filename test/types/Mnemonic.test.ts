@@ -1,7 +1,7 @@
 import { bytesToBech32 } from "../../src/types/Bech32"
 import { createHexFromUint8Array } from "../../src/types/Hex"
 import { createKeyPair } from "../../src/types/KeyPair"
-import { isAccount, isMnemonicWord, isMnemonic, generateMnemonic, createDerivationPath, getPrivateKeyFromMnenomic, createMnemonic } from "../../src/types/Mnemonic"
+import { isAccount, isMnemonicWord, isMnemonic, generateMnemonic, createDerivationPath, getPrivateKeyFromMnenomic, createMnemonic, isMnemonicLength } from "../../src/types/Mnemonic"
 import { wordlistEnglish, wordlistSpanish, wordlistChineseSimplified, wordlistChineseTraditional } from "../../src/types/MnemonicWordlist"
 
 test("isAccount", () => {
@@ -9,6 +9,13 @@ test("isAccount", () => {
   expect(isAccount(0.5)).toBeFalsy()
   expect(isAccount(0)).toBeTruthy()
   expect(isAccount(3)).toBeTruthy()
+})
+
+test("isMnemonicLength", () => {
+  expect(isMnemonicLength("12")).toBeFalsy()
+  expect(isMnemonicLength(12)).toBeTruthy()
+  expect(isMnemonicLength(24)).toBeTruthy()
+  expect(isMnemonicLength(16)).toBeFalsy()
 })
 
 test("isMnemonicWord", () => {

@@ -2,7 +2,7 @@ import { validateMnemonic, generateMnemonic as bip39GenerateMnemonic, mnemonicTo
 import { HDKey } from "@scure/bip32"
 import { Wordlist } from "./MnemonicWordlist.js"
 import { PrivateKey } from "./PrivateKey.js"
-import { isUInt } from "../lib/utils/isNumber.js"
+import { isNumber, isUInt } from "../lib/utils/isNumber.js"
 import { isArrayOfSize } from "../lib/utils/isSize.js"
 import isString from "../lib/utils/isString.js"
 import isIn from "../lib/utils/isIn.js"
@@ -13,11 +13,16 @@ export type Mnemonic =
   [MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord] |
   [MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord,
    MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord, MnemonicWord]
-export type MnemonicLength = 12 | 24
+const mnemonicLengths = [12, 24]
+export type MnemonicLength = typeof mnemonicLengths[number]
 export type Passphrase = string
 
 export type Account = number
 export type DerivationPath = `m/44'/1237'/${ Account }'/0/0`
+
+export const isMnemonicLength = (length: unknown) : length is MnemonicLength => {
+  return isNumber(length) && isIn(mnemonicLengths, length)
+}
 
 export const isMnemonicWord = (word: unknown, wordlist: Wordlist) : word is MnemonicWord => {
   return isString(word) && isIn(wordlist, word)
