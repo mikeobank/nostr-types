@@ -1,5 +1,21 @@
 import { hexToBytes } from "@noble/hashes/utils"
-import { isBech32, bech32ToHex, bech32Prefix, isBech32Prefix, hexToBech32, decode, isNpub, isNsec, isNote, createNpub, createNsec } from "../../src/types/Bech32"
+import { isBech32Char, areBech32Chars, isBech32, bech32ToHex, bech32Prefix, isBech32Prefix, hexToBech32, decode, isNpub, isNsec, isNote, createNpub, createNsec } from "../../src/types/Bech32"
+
+test("isBech32Char", () => {
+  expect(isBech32Char("0")).toBeTruthy()
+  expect(isBech32Char("z")).toBeTruthy()
+  expect(isBech32Char("i")).toBeFalsy()
+  expect(isBech32Char("A")).toBeFalsy()
+  expect(isBech32Char("1")).toBeFalsy()
+  expect(isBech32Char("1", true)).toBeTruthy()
+})
+
+test("areBech32Chars", () => {
+  expect(areBech32Chars("0za")).toBeTruthy()
+  expect(areBech32Chars("2AB")).toBeFalsy()
+  expect(areBech32Chars("1fh")).toBeFalsy()
+  expect(areBech32Chars("1fh", true)).toBeTruthy()
+})
 
 test("isBech32", () => {
   expect(isBech32("")).toBeFalsy()

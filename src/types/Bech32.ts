@@ -9,6 +9,9 @@ import isIn from "../lib/utils/isIn.js"
 import { PublicKey, PublicKeyHex, isPublicKeyHex } from "./PublicKey.js"
 import { PrivateKey, PrivateKeyHex, isPrivateKeyHex } from "./PrivateKey.js"
 
+type Bech32Char = string
+type Bech32Chars = string
+type Bech32Separator = "1"
 type Bech32 = string
 export type Npub = Bech32
 export type Nsec = Bech32
@@ -20,6 +23,21 @@ type TLVPrefix = typeof tlvPrefixes[number]
 type Prefix = HexPrefix | TLVPrefix
 type Uint8 = number
 type TLV = [Uint8, Uint8, Uint8Array]
+
+const bech32Alphabet = "023456789acdefghjklmnpqrstuvwxyz"
+const bech32AlphabetRegex = new RegExp(`[${ bech32Alphabet }]`)
+const bech32Separator: Bech32Separator = "1"
+
+export const isBech32Char = (char: unknown, separator = false) : char is Bech32Char => {
+  if (isString(char) === false) return false
+  if (char === bech32Separator) return separator
+  return bech32AlphabetRegex.test(char)
+}
+
+export const areBech32Chars = (chars: unknown, separator = false) : chars is Bech32Chars => {
+  if (isString(chars) === false) return false
+  return Array.from(chars).every(char => isBech32Char(char, separator))
+}
 
 export const isBech32 = (bech32: unknown) : bech32 is Bech32 => {
   if (isString(bech32)) {
